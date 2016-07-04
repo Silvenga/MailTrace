@@ -11,13 +11,15 @@
         public event EventHandler<string> Change;
 
         public long CurrentSeek { get; private set; }
-        public bool Running { get; private set; }
+        public bool IsRunning { get; private set; }
+
+        public int PollInterval { get; set; } = 1000;
 
         public Tailer(string filename)
         {
             _fileStream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
         }
-        
+
         public void Start()
         {
             Task.Run(() => { TailLoop(); });
@@ -25,16 +27,16 @@
 
         public void Stop()
         {
-            Running = false;
+            IsRunning = false;
         }
 
         private void TailLoop()
         {
-            Running = true;
-            while (Running)
+            IsRunning = true;
+            while (IsRunning)
             {
                 Tail();
-                Thread.Sleep(1000);
+                Thread.Sleep(PollInterval);
             }
         }
 
@@ -57,11 +59,6 @@
                 CopyStream(_fileStream, memoryStream, seekDifference);
                 memoryStream.Position = 0;
                 str = reader.ReadToEnd();
-            }
-
-            if (str == string.Empty)
-            {
-                return;
             }
 
             OnChange(str);
@@ -87,6 +84,7 @@
 
         public void Dispose()
         {
+            Stop();
             _fileStream.Dispose();
         }
     }

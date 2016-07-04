@@ -3,8 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.NetworkTail", "src\MailTrace.NetworkTail\MailTrace.NetworkTail.csproj", "{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8E169F4F-B549-427E-8B34-B8749563D7DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.NetworkTail.Tests", "tests\MailTrace.NetworkTail.Tests\MailTrace.NetworkTail.Tests.csproj", "{340546EC-0F1E-4881-9460-7C2AB08D82D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15CA596E-2805-437A-BD6E-90D0B314F9ED}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD} = {15CA596E-2805-437A-BD6E-90D0B314F9ED}
+		{340546EC-0F1E-4881-9460-7C2AB08D82D1} = {8E169F4F-B549-427E-8B34-B8749563D7DD}
 	EndGlobalSection
 EndGlobal

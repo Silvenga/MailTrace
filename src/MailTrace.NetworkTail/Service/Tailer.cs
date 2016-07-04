@@ -7,7 +7,7 @@
 
     public class Tailer : IDisposable
     {
-        private readonly Stream _fileStream;
+        private readonly string _filename;
         public event EventHandler<string> Change;
 
         public long CurrentSeek { get; private set; }
@@ -17,7 +17,7 @@
 
         public Tailer(string filename)
         {
-            _fileStream = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            _filename = filename;
         }
 
         public void Start()
@@ -42,38 +42,49 @@
 
         private void Tail()
         {
-            var possibleSeek = _fileStream.Length;
-            var seekDifference = possibleSeek - CurrentSeek;
-            CurrentSeek = possibleSeek;
-
-            if (seekDifference <= 0)
-            {
-                return;
-            }
-
             string str;
-
-            using (var memoryStream = new MemoryStream())
-            using (var reader = new StreamReader(memoryStream))
+            using (var fileStream = File.Open(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
             {
-                CopyStream(_fileStream, memoryStream, seekDifference);
-                memoryStream.Position = 0;
-                str = reader.ReadToEnd();
+                var possibleSeek = fileStream.Length;
+                var seekDifference = possibleSeek - CurrentSeek;
+
+                if (seekDifference < 0)
+                {
+                    CurrentSeek = 0;
+                    return;
+                }
+
+                if (seekDifference == 0)
+                {
+                    return;
+                }
+
+                using (var memoryStream = new MemoryStream())
+                using (var reader = new StreamReader(memoryStream))
+                {
+                    CopyStream(fileStream, memoryStream, CurrentSeek, seekDifference);
+                    memoryStream.Position = 0;
+                    str = reader.ReadToEnd();
+                }
+
+                CurrentSeek = possibleSeek;
             }
 
             OnChange(str);
         }
 
-        private void CopyStream(Stream input, Stream output, long count)
+        private void CopyStream(Stream input, Stream output, long start, long length)
         {
-            var bufferSize = Math.Min(4096, count);
+            var bufferSize = Math.Min(4096, length);
             var buffer = new byte[bufferSize];
             long read;
 
-            while ((read = input.Read(buffer, 0, (int) Math.Min(bufferSize, count))) > 0)
+            input.Seek(start, SeekOrigin.Begin);
+
+            while ((read = input.Read(buffer, 0, (int) Math.Min(bufferSize, length))) > 0)
             {
                 output.Write(buffer, 0, (int) read);
-                count -= read;
+                length -= read;
             }
         }
 
@@ -85,7 +96,6 @@
         public void Dispose()
         {
             Stop();
-            _fileStream.Dispose();
         }
     }
 }

@@ -18,14 +18,19 @@
 
         private readonly EventWaitHandle _waiter = new EventWaitHandle(false, EventResetMode.AutoReset);
 
-        private readonly FileStream _fileStream;
-        private readonly StreamWriter _streamWriter;
-        private readonly string _path;
+        private FileStream _fileStream;
+        private StreamWriter _streamWriter;
+        private string _path;
 
         public TailerFacts()
         {
             _path = Path.GetTempFileName();
-            _fileStream = File.Open(_path, FileMode.Open, FileAccess.ReadWrite, FileShare.Delete | FileShare.ReadWrite);
+            CreateTempFile();
+        }
+
+        private void CreateTempFile()
+        {
+            _fileStream = File.Open(_path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             _streamWriter = new StreamWriter(_fileStream)
             {
                 AutoFlush = true
@@ -84,6 +89,71 @@
         }
 
         [Fact]
+        public void When_file_is_replaced_and_is_smaller_tail_it_from_begining()
+        {
+            var content = AutoFixture.Create<string>();
+            _streamWriter.Write(AutoFixture.Create<string>() + AutoFixture.Create<string>());
+
+            var result = "";
+
+            var tailer = new Tailer(_path)
+            {
+                PollInterval = 1
+            };
+            tailer.Change += (sender, s) =>
+            {
+                result = s;
+                _waiter.Set();
+            };
+
+            // Act
+            tailer.Start();
+            _waiter.WaitOne(1000).Should().BeTrue();
+
+            Dispose();
+            CreateTempFile();
+
+            _streamWriter.Write(content);
+            _waiter.WaitOne(1000).Should().BeTrue();
+
+            // Assert
+            result.Should().Be(content);
+        }
+
+        [Fact]
+        public void When_file_is_replaced_and_is_same_size_tail_it_from_last_seek()
+        {
+            var content = AutoFixture.Create<string>();
+            _streamWriter.Write(AutoFixture.Create<string>());
+
+            var result = "";
+
+            var tailer = new Tailer(_path)
+            {
+                PollInterval = 1
+            };
+            tailer.Change += (sender, s) =>
+            {
+                result = s;
+                _waiter.Set();
+            };
+
+            // Act
+            tailer.Start();
+            _waiter.WaitOne(1000).Should().BeTrue();
+
+            Dispose();
+            CreateTempFile();
+
+            _streamWriter.Write(AutoFixture.Create<string>());
+            _streamWriter.Write(content);
+            _waiter.WaitOne(1000).Should().BeTrue();
+
+            // Assert
+            result.Should().Be(content);
+        }
+
+        [Fact]
         public void When_tailing_file_is_deleted_dont_throw()
         {
             var tailer = new Tailer(_path)
@@ -109,6 +179,8 @@
                 PollInterval = 1
             };
             tailer.Start();
+
+            Thread.Sleep(10);
 
             // Act
             using (tailer)

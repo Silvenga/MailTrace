@@ -1,6 +1,7 @@
 ﻿namespace MailTrace.NetworkTail
 {
     using System;
+    using System.Linq;
 
     using MailTrace.NetworkTail.Service;
 
@@ -8,7 +9,7 @@
     {
         static void Main(string[] args)
         {
-            var tailer = new Tailer("C:\\Users\\Mark\\Desktop\\test.txt");
+            var tailer = new Tailer(args.First());
 
             tailer.Change += (sender, s) => Console.Write(s);
 

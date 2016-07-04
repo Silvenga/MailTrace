@@ -17,10 +17,10 @@
         private static readonly Fixture AutoFixture = new Fixture();
 
         private readonly EventWaitHandle _waiter = new EventWaitHandle(false, EventResetMode.AutoReset);
+        private readonly string _path;
 
         private FileStream _fileStream;
         private StreamWriter _streamWriter;
-        private string _path;
 
         public TailerFacts()
         {
@@ -166,7 +166,7 @@
             // Act
             File.Delete(_path);
 
-            Thread.Sleep(100);
+            Thread.Sleep(10);
 
             // Assert
         }
@@ -186,6 +186,32 @@
             using (tailer)
             {
             }
+
+            // Assert
+            tailer.IsRunning.Should().BeFalse();
+        }
+
+        [Fact]
+        public void When_already_started_starting_again_should_throw()
+        {
+            var tailer = new Tailer(_path);
+            tailer.Start();
+
+            // Act
+            Action task = () => tailer.Start();
+
+            // Assert
+            task.ShouldThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void When_started_stopping_should_stop_running()
+        {
+            var tailer = new Tailer(_path);
+            tailer.Start();
+
+            // Act
+            tailer.Stop();
 
             // Assert
             tailer.IsRunning.Should().BeFalse();

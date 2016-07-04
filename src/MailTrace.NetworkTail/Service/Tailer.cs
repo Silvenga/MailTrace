@@ -8,11 +8,11 @@
     public class Tailer : IDisposable
     {
         private readonly string _filename;
+        private long _currentSeek;
+
         public event EventHandler<string> Change;
 
-        public long CurrentSeek { get; private set; }
         public bool IsRunning { get; private set; }
-
         public int PollInterval { get; set; } = 1000;
 
         public Tailer(string filename)
@@ -22,6 +22,10 @@
 
         public void Start()
         {
+            if (IsRunning)
+            {
+                throw new InvalidOperationException("Cannot start trailing once already started.");
+            }
             Task.Run(() => { TailLoop(); });
         }
 
@@ -46,11 +50,11 @@
             using (var fileStream = File.Open(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
             {
                 var possibleSeek = fileStream.Length;
-                var seekDifference = possibleSeek - CurrentSeek;
+                var seekDifference = possibleSeek - _currentSeek;
 
                 if (seekDifference < 0)
                 {
-                    CurrentSeek = 0;
+                    _currentSeek = 0;
                     return;
                 }
 
@@ -62,18 +66,18 @@
                 using (var memoryStream = new MemoryStream())
                 using (var reader = new StreamReader(memoryStream))
                 {
-                    CopyStream(fileStream, memoryStream, CurrentSeek, seekDifference);
+                    CopyStream(fileStream, memoryStream, _currentSeek, seekDifference);
                     memoryStream.Position = 0;
                     str = reader.ReadToEnd();
                 }
 
-                CurrentSeek = possibleSeek;
+                _currentSeek = possibleSeek;
             }
 
             OnChange(str);
         }
 
-        private void CopyStream(Stream input, Stream output, long start, long length)
+        private static void CopyStream(Stream input, Stream output, long start, long length)
         {
             var bufferSize = Math.Min(4096, length);
             var buffer = new byte[bufferSize];

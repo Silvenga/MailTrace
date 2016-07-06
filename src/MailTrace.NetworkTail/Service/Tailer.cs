@@ -5,12 +5,15 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class Tailer : IDisposable
+    using MailTrace.NetworkTail.Interfaces;
+    using MailTrace.NetworkTail.Models;
+
+    public class Tailer : IChangable
     {
         private readonly string _filename;
         private long _currentSeek;
 
-        public event EventHandler<string> Change;
+        public event EventHandler<ChangedEventArgs> Changed;
 
         public bool IsRunning { get; private set; }
         public int PollInterval { get; set; } = 1000;
@@ -74,7 +77,7 @@
                 _currentSeek = possibleSeek;
             }
 
-            OnChange(str);
+            OnChanged(str);
         }
 
         private static void CopyStream(Stream input, Stream output, long start, long length)
@@ -92,9 +95,9 @@
             }
         }
 
-        protected virtual void OnChange(string e)
+        protected virtual void OnChanged(string e)
         {
-            Change?.Invoke(this, e);
+            Changed?.Invoke(this, new ChangedEventArgs(e));
         }
 
         public void Dispose()

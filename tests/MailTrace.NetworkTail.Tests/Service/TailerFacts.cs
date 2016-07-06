@@ -46,9 +46,9 @@
             var result = "";
 
             var tailer = new Tailer(_path);
-            tailer.Change += (sender, s) =>
+            tailer.Changed += (sender, s) =>
             {
-                result = s;
+                result = s.Value;
                 _waiter.Set();
             };
 
@@ -72,9 +72,9 @@
             {
                 PollInterval = 1
             };
-            tailer.Change += (sender, s) =>
+            tailer.Changed += (sender, s) =>
             {
-                result = s;
+                result = s.Value;
                 _waiter.Set();
             };
 
@@ -100,9 +100,9 @@
             {
                 PollInterval = 1
             };
-            tailer.Change += (sender, s) =>
+            tailer.Changed += (sender, s) =>
             {
-                result = s;
+                result = s.Value;
                 _waiter.Set();
             };
 
@@ -132,9 +132,9 @@
             {
                 PollInterval = 1
             };
-            tailer.Change += (sender, s) =>
+            tailer.Changed += (sender, s) =>
             {
-                result = s;
+                result = s.Value;
                 _waiter.Set();
             };
 

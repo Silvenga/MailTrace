@@ -11,7 +11,7 @@
         {
             var tailer = new Tailer(args.First());
 
-            tailer.Change += (sender, s) => Console.Write(s);
+            tailer.Changed += (sender, s) => Console.Write(s);
 
             tailer.Start();
 

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.NetworkTail.Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15CA596E-2805-437A-BD6E-90D0B314F9ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.Host", "src\MailTrace.Host\MailTrace.Host.csproj", "{866717DA-CB0B-487B-9A09-C46AD0A56898}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{340546EC-0F1E-4881-9460-7C2AB08D82D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866717DA-CB0B-487B-9A09-C46AD0A56898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866717DA-CB0B-487B-9A09-C46AD0A56898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866717DA-CB0B-487B-9A09-C46AD0A56898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866717DA-CB0B-487B-9A09-C46AD0A56898}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +38,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F3E6AB6D-959D-4E96-ACA8-C87632A3D0BD} = {15CA596E-2805-437A-BD6E-90D0B314F9ED}
 		{340546EC-0F1E-4881-9460-7C2AB08D82D1} = {8E169F4F-B549-427E-8B34-B8749563D7DD}
+		{866717DA-CB0B-487B-9A09-C46AD0A56898} = {15CA596E-2805-437A-BD6E-90D0B314F9ED}
 	EndGlobalSection
 EndGlobal

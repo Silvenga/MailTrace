@@ -13,19 +13,19 @@
 
             public DateTime? After { get; set; }
         }
-    }
 
-    public class Result 
-    {
-        public IList<Model> Logs { get; set; }
-    }
+        public class Result
+        {
+            public IList<Model> Logs { get; set; }
+        }
 
-    public class Model
-    {
-        public int Id { get; set; }
+        public class Model
+        {
+            public int Id { get; set; }
 
-        public string Message { get; set; }
+            public string Message { get; set; }
 
-        public DateTimeOffset Timestamp { get; set; }
+            public DateTimeOffset Timestamp { get; set; }
+        }
     }
 }

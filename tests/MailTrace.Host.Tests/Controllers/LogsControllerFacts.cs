@@ -29,7 +29,7 @@
         public async Task METHOD_NAME()
         {
             // Act
-            var response = await _server.HttpClient.GetAsync("/api/logs/list");
+            var response = await _server.HttpClient.GetAsync("/api/logs/list?Before=2016/8/9");
             var body = await response.Content.ReadAsStringAsync();
 
             //var message = JObject.Parse(body);

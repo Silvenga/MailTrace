@@ -9,7 +9,7 @@
 
     using MediatR;
 
-    public class ListLogsHandler : IRequestHandler<ListLogs.Query, Result>
+    public class ListLogsHandler : IRequestHandler<ListLogs.Query, ListLogs.Result>
     {
         private readonly ILogContext _context;
         private readonly IConfigurationProvider _mapperConfig;
@@ -20,16 +20,16 @@
             _mapperConfig = mapperConfig;
         }
 
-        public Result Handle(ListLogs.Query message)
+        public ListLogs.Result Handle(ListLogs.Query message)
         {
             var result =
                 from x in _context.Logs.AsQueryable()
                 where x.Timestamp <= message.After && x.Timestamp >= message.Before
                 select x;
 
-            var list = result.ProjectTo<Model>(_mapperConfig).ToList();
+            var list = result.ProjectTo<ListLogs.Model>(_mapperConfig).ToList();
 
-            return new Result
+            return new ListLogs.Result
             {
                 Logs = list
             };

@@ -17,8 +17,10 @@
         }
 
         [Route("list"), HttpGet]
-        public IHttpActionResult ListLogsAsync(ListLogs.Query query)
+        public IHttpActionResult ListLogsAsync([FromUri] ListLogs.Query query)
         {
+            query = query ?? new ListLogs.Query();
+
             var result = _mediator.Send(query);
 
             return Ok();

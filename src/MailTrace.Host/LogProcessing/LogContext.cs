@@ -10,12 +10,12 @@
 
     public class LogContext : ILogContext
     {
-        public IList<Log> Logs { get; set; }
+        public IList<Log> Logs { get; set; } = new List<Log>();
     }
 
     public class Log
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Message { get; set; }
 

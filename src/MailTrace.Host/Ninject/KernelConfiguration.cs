@@ -16,8 +16,6 @@
         {
             var kernel = new StandardKernel();
 
-            //kernel.Bind<IKernel>().ToConstant(kernel);
-
             BindAutoMapper(kernel);
             BindMediatR(kernel);
 
@@ -32,7 +30,17 @@
             kernel.Bind(scan => scan.FromAssemblyContaining<ListLogsHandler>().SelectAllClasses().BindDefaultInterface());
             kernel.Bind<SingleInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.Get(t));
             kernel.Bind<MultiInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.GetAll(t));
-        }
+
+            kernel.Bind(x => x.FromThisAssembly()
+                              .SelectAllClasses()
+                              .InheritedFrom(typeof(IRequestHandler<,>))
+                              .BindSingleInterface());
+
+            kernel.Bind(x => x.FromThisAssembly()
+                              .SelectAllClasses()
+                              .InheritedFrom(typeof(IAsyncRequestHandler<,>))
+                              .BindSingleInterface());
+            }
 
         private static void BindAutoMapper(IKernel kernel)
         {

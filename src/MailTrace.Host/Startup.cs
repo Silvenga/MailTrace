@@ -6,7 +6,9 @@ namespace MailTrace.Host
 {
     using System.Web.Http;
 
+    using global::Ninject;
     using global::Ninject.Web.Common.OwinHost;
+    using global::Ninject.Web.WebApi;
     using global::Ninject.Web.WebApi.OwinHost;
 
     using MailTrace.Host.Ninject;
@@ -17,21 +19,27 @@ namespace MailTrace.Host
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureNinject(app);
-            ConfigureWebApi(app);
+            var kernel = ConfigureNinject(app);
+            ConfigureWebApi(app, kernel);
         }
 
-        private void ConfigureNinject(IAppBuilder app)
+        private IKernel ConfigureNinject(IAppBuilder app)
         {
             var kernel = KernelConfiguration.CreateKernel();
-            app.UseNinjectMiddleware(() => kernel);
+           
+#if NCRUNCH
+            kernel.Load(typeof(WebApiModule).Assembly);
+#endif
+
+            return kernel;
         }
 
-        private static void ConfigureWebApi(IAppBuilder app)
+        private static void ConfigureWebApi(IAppBuilder app, IKernel kernel)
         {
             var config = new HttpConfiguration();
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             config.MapHttpAttributeRoutes();
-            app.UseNinjectWebApi(config);
+            app.UseNinjectMiddleware(() => kernel).UseNinjectWebApi(config);
         }
     }
 }

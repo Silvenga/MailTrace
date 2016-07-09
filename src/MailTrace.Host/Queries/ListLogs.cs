@@ -15,7 +15,7 @@
         }
     }
 
-    public class Result
+    public class Result 
     {
         public IList<Model> Logs { get; set; }
     }

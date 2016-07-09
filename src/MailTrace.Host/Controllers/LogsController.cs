@@ -1,8 +1,6 @@
 ﻿namespace MailTrace.Host.Controllers
 {
-    using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.Http.Results;
 
     using MailTrace.Host.Queries;
 
@@ -23,7 +21,7 @@
         {
             var result = _mediator.Send(query);
 
-            return Ok(result);
+            return Ok();
         }
     }
 }

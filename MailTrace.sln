@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.Host", "src\MailT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainTrace.Host.Selfhost", "MainTrace.Host.Selfhost\MainTrace.Host.Selfhost.csproj", "{4C4C3DA1-C079-4AF7-A8CE-DEBE5FEA748C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailTrace.Host.Tests", "tests\MailTrace.Host.Tests\MailTrace.Host.Tests.csproj", "{14656E29-D6EB-4A36-B057-B0E2A98236CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{4C4C3DA1-C079-4AF7-A8CE-DEBE5FEA748C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C4C3DA1-C079-4AF7-A8CE-DEBE5FEA748C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C4C3DA1-C079-4AF7-A8CE-DEBE5FEA748C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14656E29-D6EB-4A36-B057-B0E2A98236CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14656E29-D6EB-4A36-B057-B0E2A98236CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14656E29-D6EB-4A36-B057-B0E2A98236CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14656E29-D6EB-4A36-B057-B0E2A98236CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 		{340546EC-0F1E-4881-9460-7C2AB08D82D1} = {8E169F4F-B549-427E-8B34-B8749563D7DD}
 		{866717DA-CB0B-487B-9A09-C46AD0A56898} = {15CA596E-2805-437A-BD6E-90D0B314F9ED}
 		{4C4C3DA1-C079-4AF7-A8CE-DEBE5FEA748C} = {15CA596E-2805-437A-BD6E-90D0B314F9ED}
+		{14656E29-D6EB-4A36-B057-B0E2A98236CD} = {8E169F4F-B549-427E-8B34-B8749563D7DD}
 	EndGlobalSection
 EndGlobal

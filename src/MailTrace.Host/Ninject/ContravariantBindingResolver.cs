@@ -18,7 +18,7 @@
             {
                 var genericType = service.GetGenericTypeDefinition();
                 var genericArguments = genericType.GetGenericArguments();
-                if (genericArguments.Count() == 1
+                if (genericArguments.Length == 1
                     && genericArguments.Single().GenericParameterAttributes.HasFlag(GenericParameterAttributes.Contravariant))
                 {
                     var argument = service.GetGenericArguments().Single();

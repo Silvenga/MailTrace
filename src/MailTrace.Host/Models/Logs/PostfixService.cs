@@ -1,0 +1,9 @@
+namespace MailTrace.Host.Models.Logs
+{
+    public class PostfixService
+    {
+        public string Name { get; set; }
+
+        public string Pid { get; set; }
+    }
+}

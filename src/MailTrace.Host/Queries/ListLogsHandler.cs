@@ -5,16 +5,16 @@
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
 
-    using MailTrace.Host.LogProcessing;
+    using MailTrace.Host.Data;
 
     using MediatR;
 
     public class ListLogsHandler : IRequestHandler<ListLogs.Query, ListLogs.Result>
     {
-        private readonly ILogContext _context;
+        private readonly TraceContext _context;
         private readonly IConfigurationProvider _mapperConfig;
 
-        public ListLogsHandler(ILogContext context, IConfigurationProvider mapperConfig)
+        public ListLogsHandler(TraceContext context, IConfigurationProvider mapperConfig)
         {
             _context = context;
             _mapperConfig = mapperConfig;

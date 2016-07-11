@@ -117,11 +117,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\LogsControllerFacts.cs" />
+    <Compile Include="LogProcessing\LogParserFacts.cs" />
     <Compile Include="MediatRFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="Assets\mail.log">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

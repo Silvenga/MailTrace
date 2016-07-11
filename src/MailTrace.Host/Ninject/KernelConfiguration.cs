@@ -46,8 +46,8 @@
         {
             IConfigurationProvider config = new MapperConfiguration(cfg => { cfg.CreateMissingTypeMaps = true; });
 
-            kernel.Bind<IMapper>().ToMethod(x => config.CreateMapper());
             kernel.Bind<IConfigurationProvider>().ToConstant(config);
+            kernel.Bind<IMapper>().ToMethod(x => x.Kernel.Get<IConfigurationProvider>().CreateMapper());
         }
     }
 }

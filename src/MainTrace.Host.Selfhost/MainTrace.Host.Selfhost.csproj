@@ -83,7 +83,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\MailTrace.Host\MailTrace.Host.csproj">
+    <ProjectReference Include="..\MailTrace.Host\MailTrace.Host.csproj">
       <Project>{866717DA-CB0B-487B-9A09-C46AD0A56898}</Project>
       <Name>MailTrace.Host</Name>
     </ProjectReference>

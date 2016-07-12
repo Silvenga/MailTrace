@@ -11,5 +11,11 @@
         public DbSet<Email> Emails { get; set; }
 
         public DbSet<EmailProperty> EmailProperties { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("public");
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

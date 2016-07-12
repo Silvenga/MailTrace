@@ -3,13 +3,10 @@
     using System;
     using System.Net;
     using System.Threading.Tasks;
-    using System.Web.Http;
 
     using FluentAssertions;
 
     using Microsoft.Owin.Testing;
-
-    using Newtonsoft.Json.Linq;
 
     using Xunit;
     using Xunit.Abstractions;

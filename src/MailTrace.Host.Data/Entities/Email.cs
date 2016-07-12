@@ -7,9 +7,6 @@
         public string Id { get; set; }
 
         [Index]
-        public string Host { get; set; }
-
-        [Index]
-        public string QueueId { get; set; }
+        public string MessageId { get; set; }
     }
 }

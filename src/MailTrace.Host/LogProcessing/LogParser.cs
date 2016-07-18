@@ -39,7 +39,20 @@
             result.QueueId = match.Groups["queueId"].Success ? match.Groups["queueId"].Value : null;
             result.Message = match.Groups["message"].Value;
 
+            result.Attributes = result.Service.Name.StartsWith("postfix")
+                ? ParseTuples(result.Message).ToList()
+                : new List<LineAttribute>();
+
             return result;
+        }
+
+        private IEnumerable<LineAttribute> ParseTuples(string message)
+        {
+            var tuples = message.Split(',').Select(x => x.Split('='));
+            foreach (var tuple in tuples.Where(x => x.Length == 2))
+            {
+                yield return new LineAttribute(tuple.First(), tuple.Last());
+            }
         }
     }
 }

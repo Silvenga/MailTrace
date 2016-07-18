@@ -6,6 +6,7 @@
     using FluentAssertions;
 
     using MailTrace.Host.LogProcessing;
+    using MailTrace.Host.Models.Logs;
 
     using Xunit;
 
@@ -21,7 +22,11 @@
                 "postfix/smtpd",
                 "16283",
                 "EF59F17F531",
-                "client=localhost[127.0.0.1]"
+                "client=localhost[127.0.0.1]",
+                new LineAttribute[]
+                {
+                    new LineAttribute("client", "localhost[127.0.0.1]"),
+                }
             },
             new object[]
             {
@@ -31,7 +36,11 @@
                 "postfix/cleanup",
                 "16286",
                 "EF59F17F531",
-                "message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>"
+                "message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>",
+                new LineAttribute[]
+                {
+                    new LineAttribute("message-id", "<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>")
+                }
             },
             new object[]
             {
@@ -41,7 +50,10 @@
                 "opendkim",
                 "1708",
                 "EF59F17F531",
-                "DKIM-Signature field added (s=2048_3_2015, d=silvenga.com)"
+                "DKIM-Signature field added (s=2048_3_2015, d=silvenga.com)",
+                new LineAttribute[]
+                {
+                }
             },
             new object[]
             {
@@ -51,12 +63,16 @@
                 "postfix/smtpd",
                 "13724",
                 null,
-                "connect from localhost[127.0.0.1]"
+                "connect from localhost[127.0.0.1]",
+                new LineAttribute[]
+                {
+                }
             }
         };
 
         [Theory, MemberData(nameof(LogLines))]
-        public void Can_parse_connect_line(string line, DateTime time, string host, string serviceName, string servicePid, string queueId, string message)
+        public void Can_parse_connect_line(string line, DateTime time, string host, string serviceName, string servicePid, string queueId, string message,
+                                           LineAttribute[] attributes)
         {
             var parser = new LogParser();
 
@@ -70,6 +86,7 @@
             result.Service.Pid.Should().Be(servicePid);
             result.QueueId.Should().Be(queueId);
             result.Message.Should().Be(message);
+            result.Attributes.Should().BeEquivalentTo(attributes);
         }
     }
 }

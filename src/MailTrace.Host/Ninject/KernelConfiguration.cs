@@ -6,6 +6,8 @@
     using global::Ninject.Extensions.Conventions;
     using global::Ninject.Planning.Bindings.Resolvers;
 
+    using MailTrace.Data.Postgresql;
+    using MailTrace.Host.Data;
     using MailTrace.Host.Queries;
 
     using MediatR;
@@ -20,6 +22,11 @@
             BindMediatR(kernel);
 
             return kernel;
+        }
+
+        private static void ConfigureData(IKernel kernel)
+        {
+            kernel.Bind<TraceContext>().To<PostgresqlTraceContext>();
         }
 
         // ReSharper disable once IdentifierTypo
@@ -40,7 +47,7 @@
                               .SelectAllClasses()
                               .InheritedFrom(typeof(IAsyncRequestHandler<,>))
                               .BindSingleInterface());
-            }
+        }
 
         private static void BindAutoMapper(IKernel kernel)
         {

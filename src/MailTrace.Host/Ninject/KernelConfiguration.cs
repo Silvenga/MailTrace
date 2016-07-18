@@ -34,16 +34,18 @@
         {
             kernel.Components.Add<IBindingResolver, ContravariantBindingResolver>();
             kernel.Bind(scan => scan.FromAssemblyContaining<IMediator>().SelectAllClasses().BindDefaultInterface());
-            kernel.Bind(scan => scan.FromAssemblyContaining<ListLogsHandler>().SelectAllClasses().BindDefaultInterface());
-            kernel.Bind<SingleInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.Get(t));
+            kernel.Bind<SingleInstanceFactory>().ToMethod(ctx => t =>
+            {
+                return ctx.Kernel.Get(t);
+            });
             kernel.Bind<MultiInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.GetAll(t));
 
-            kernel.Bind(x => x.FromThisAssembly()
+            kernel.Bind(x => x.FromAssemblyContaining<ListLogsHandler>()
                               .SelectAllClasses()
                               .InheritedFrom(typeof(IRequestHandler<,>))
                               .BindSingleInterface());
 
-            kernel.Bind(x => x.FromThisAssembly()
+            kernel.Bind(x => x.FromAssemblyContaining<ListLogsHandler>()
                               .SelectAllClasses()
                               .InheritedFrom(typeof(IAsyncRequestHandler<,>))
                               .BindSingleInterface());

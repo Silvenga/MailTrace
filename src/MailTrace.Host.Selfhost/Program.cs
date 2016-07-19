@@ -1,4 +1,4 @@
-﻿namespace MainTrace.Host.Selfhost
+﻿namespace MailTrace.Host.Selfhost
 {
     using System;
 

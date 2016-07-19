@@ -19,6 +19,10 @@
     {
         private readonly IKernel _kernel;
 
+//#if NCRUNCH
+//            kernel.Load(typeof(WebApiModule).Assembly);
+//#endif
+
         public LogsControllerFacts()
         {
             _kernel = KernelConfiguration.CreateKernel();

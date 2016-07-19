@@ -61,6 +61,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql, Version=3.1.6.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Npgsql.3.1.6\lib\net451\Npgsql.dll</HintPath>
       <Private>True</Private>
@@ -96,13 +100,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\MailTrace.Data.Postgresql\MailTrace.Data.Postgresql.csproj">
       <Project>{89c6f962-75fb-444e-b8c4-634303c71af9}</Project>
       <Name>MailTrace.Data.Postgresql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\MailTrace.Host.Data\MailTrace.Host.Data.csproj">
+      <Project>{DDB7F080-7A44-4984-B2C3-CF592A9C2E0A}</Project>
+      <Name>MailTrace.Host.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\MailTrace.Host\MailTrace.Host.csproj">
       <Project>{866717DA-CB0B-487B-9A09-C46AD0A56898}</Project>

@@ -2,7 +2,9 @@
 {
     using System;
 
+    using MailTrace.Data.Postgresql;
     using MailTrace.Host;
+    using MailTrace.Host.Data;
 
     using Microsoft.Owin.Hosting;
 
@@ -12,10 +14,16 @@
         {
             const string baseAddress = "http://localhost:9900/";
 
-            // Start OWIN host 
-            using (WebApp.Start<Startup>(url: baseAddress))
+            Startup.PostConfigureKernel += kernel => { kernel.Bind<TraceContext>().To<PostgresqlTraceContext>(); };
+
+            Console.WriteLine("Running Migration...");
+
+            var context = new PostgresqlTraceContext();
+            context.Migrate();
+
+            using (WebApp.Start<Startup>(baseAddress))
             {
-                Console.WriteLine("Ready");
+                Console.WriteLine("Ready.");
                 Console.ReadLine();
             }
         }

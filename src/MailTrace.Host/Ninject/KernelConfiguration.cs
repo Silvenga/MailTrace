@@ -6,8 +6,6 @@
     using global::Ninject.Extensions.Conventions;
     using global::Ninject.Planning.Bindings.Resolvers;
 
-    using MailTrace.Data.Postgresql;
-    using MailTrace.Host.Data;
     using MailTrace.Host.Queries;
 
     using MediatR;
@@ -21,14 +19,7 @@
             BindAutoMapper(kernel);
             BindMediatR(kernel);
 
-            ConfigureData(kernel);
-
             return kernel;
-        }
-
-        private static void ConfigureData(IKernel kernel)
-        {
-            kernel.Bind<TraceContext>().To<PostgresqlTraceContext>();
         }
 
         // ReSharper disable once IdentifierTypo

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using global::Ninject;
@@ -16,7 +17,7 @@
 
     public class LogsControllerFacts : IDisposable
     {
-        private IKernel _kernel;
+        private readonly IKernel _kernel;
 
         public LogsControllerFacts()
         {
@@ -24,8 +25,7 @@
 
             var connection = Effort.DbConnectionFactory.CreateTransient();
 
-            var context = new TestTraceContext(connection);
-            _kernel.Rebind<TraceContext>().ToConstant(context);
+            _kernel.Rebind<TraceContext>().ToMethod(x => new TestTraceContext(connection));
         }
 
         [Fact]
@@ -40,10 +40,14 @@
                 }
             };
 
+            var context = _kernel.Get<TraceContext>();
+
             // Act
             var result = await controller.ImportAsync(command);
 
             // Assert
+
+            var results = context.EmailProperties.ToList();
         }
 
         public void Dispose()

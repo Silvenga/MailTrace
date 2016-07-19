@@ -45,7 +45,7 @@
 
             var result = "";
 
-            var tailer = new Tailer(_path);
+            var tailer = new ChangeTailer(_path);
             tailer.Changed += (sender, s) =>
             {
                 result = s.Value;
@@ -68,7 +68,7 @@
 
             var result = "";
 
-            var tailer = new Tailer(_path)
+            var tailer = new ChangeTailer(_path)
             {
                 PollInterval = 1
             };
@@ -96,7 +96,7 @@
 
             var result = "";
 
-            var tailer = new Tailer(_path)
+            var tailer = new ChangeTailer(_path)
             {
                 PollInterval = 1
             };
@@ -128,7 +128,7 @@
 
             var result = "";
 
-            var tailer = new Tailer(_path)
+            var tailer = new ChangeTailer(_path)
             {
                 PollInterval = 1
             };
@@ -156,7 +156,7 @@
         [Fact]
         public void When_tailing_file_is_deleted_dont_throw()
         {
-            var tailer = new Tailer(_path)
+            var tailer = new ChangeTailer(_path)
             {
                 PollInterval = 1
             };
@@ -174,7 +174,7 @@
         [Fact]
         public void When_disposing_tailer_dispose_of_file_stream()
         {
-            var tailer = new Tailer(_path)
+            var tailer = new ChangeTailer(_path)
             {
                 PollInterval = 1
             };
@@ -194,8 +194,10 @@
         [Fact]
         public void When_already_started_starting_again_should_throw()
         {
-            var tailer = new Tailer(_path);
+            var tailer = new ChangeTailer(_path);
             tailer.Start();
+
+            Thread.Sleep(10);
 
             // Act
             Action task = () => tailer.Start();
@@ -207,7 +209,7 @@
         [Fact]
         public void When_started_stopping_should_stop_running()
         {
-            var tailer = new Tailer(_path);
+            var tailer = new ChangeTailer(_path);
             tailer.Start();
 
             // Act

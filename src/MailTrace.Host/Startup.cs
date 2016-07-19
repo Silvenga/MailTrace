@@ -8,7 +8,6 @@ namespace MailTrace.Host
 
     using global::Ninject;
     using global::Ninject.Web.Common.OwinHost;
-    using global::Ninject.Web.WebApi;
     using global::Ninject.Web.WebApi.OwinHost;
 
     using MailTrace.Host.Ninject;
@@ -26,7 +25,7 @@ namespace MailTrace.Host
         private IKernel ConfigureNinject(IAppBuilder app)
         {
             var kernel = KernelConfiguration.CreateKernel();
-           
+
 #if NCRUNCH
             kernel.Load(typeof(WebApiModule).Assembly);
 #endif

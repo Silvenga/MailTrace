@@ -21,6 +21,8 @@
             BindAutoMapper(kernel);
             BindMediatR(kernel);
 
+            ConfigureData(kernel);
+
             return kernel;
         }
 
@@ -34,10 +36,7 @@
         {
             kernel.Components.Add<IBindingResolver, ContravariantBindingResolver>();
             kernel.Bind(scan => scan.FromAssemblyContaining<IMediator>().SelectAllClasses().BindDefaultInterface());
-            kernel.Bind<SingleInstanceFactory>().ToMethod(ctx => t =>
-            {
-                return ctx.Kernel.Get(t);
-            });
+            kernel.Bind<SingleInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.Get(t));
             kernel.Bind<MultiInstanceFactory>().ToMethod(ctx => t => ctx.Kernel.GetAll(t));
 
             kernel.Bind(x => x.FromAssemblyContaining<ListLogsHandler>()

@@ -1,5 +1,6 @@
 ﻿namespace MailTrace.Host.Data
 {
+    using System;
     using System.Data.Common;
     using System.Data.Entity;
 
@@ -20,5 +21,10 @@
         public DbSet<Email> Emails { get; set; }
 
         public DbSet<EmailProperty> EmailProperties { get; set; }
+
+        public virtual void Migrate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

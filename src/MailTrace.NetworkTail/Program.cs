@@ -9,7 +9,7 @@
     {
         static void Main(string[] args)
         {
-            var tailer = new Tailer(args.First());
+            var tailer = new ChangeTailer(args.First());
 
             tailer.Changed += (sender, s) => Console.Write(s);
 

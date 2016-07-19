@@ -8,7 +8,7 @@
     using MailTrace.NetworkTail.Interfaces;
     using MailTrace.NetworkTail.Models;
 
-    public class Tailer : IChangable
+    public class ChangeTailer : IChangable
     {
         private readonly string _filename;
         private long _currentSeek;
@@ -18,7 +18,7 @@
         public bool IsRunning { get; private set; }
         public int PollInterval { get; set; } = 1000;
 
-        public Tailer(string filename)
+        public ChangeTailer(string filename)
         {
             _filename = filename;
         }

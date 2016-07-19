@@ -15,7 +15,7 @@
 
         private readonly BlockingCollection<string> _queue = new BlockingCollection<string>();
 
-        public int MinimalInterval { get; set; } = 1000;
+        public int MinimalInterval { get; set; } = 5000;
 
         public event EventHandler<ChangedEventArgs> Changed;
 

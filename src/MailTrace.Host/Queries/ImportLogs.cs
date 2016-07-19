@@ -1,11 +1,13 @@
 ﻿namespace MailTrace.Host.Queries
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using FluentValidation;
 
     using MailTrace.Host.Data;
+    using MailTrace.Host.Data.Entities;
     using MailTrace.Host.LogProcessing;
 
     using MediatR;
@@ -28,7 +30,7 @@
 
         public class Result
         {
-            public int LinesProcessed { get; set; }
+            public int ChangesProcessed { get; set; }
         }
     }
 
@@ -45,12 +47,28 @@
 
         public async Task<ImportLogs.Result> Handle(ImportLogs.Command message)
         {
-            var lines = _parser.Parse(message.LogLines);
-
-            return new ImportLogs.Result
+            using (_context)
             {
-                LinesProcessed = 0
-            };
+                var lines = _parser
+                    .Parse(message.LogLines)
+                    .SelectMany(x => x.Attributes, (line, attribute) => new EmailProperty
+                    {
+                        QueueId = line.QueueId,
+                        Host = line.Host,
+                        Key = attribute.Name,
+                        Value = attribute.Value,
+                        SourceTime = line.SourceTime
+                    });
+
+                _context.EmailProperties.AddRange(lines);
+
+                var changed = await _context.SaveChangesAsync();
+
+                return new ImportLogs.Result
+                {
+                    ChangesProcessed = changed
+                };
+            }
         }
     }
 }

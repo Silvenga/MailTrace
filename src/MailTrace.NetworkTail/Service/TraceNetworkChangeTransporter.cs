@@ -24,14 +24,23 @@
         {
             OnChanged(changedEventArgs);
 
-            var lines = changedEventArgs.Value.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
-
-            var command = new NetworkLogLinesCommand
+            try
             {
-                LogLines = lines
-            };
+                var lines = changedEventArgs.Value.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
 
-            var result = _client.PostAsJsonAsync("/api/logs/import", command).Result;
+                var command = new NetworkLogLinesCommand
+                {
+                    LogLines = lines
+                };
+
+                var result = _client.PostAsJsonAsync("/api/logs/import", command).Result;
+                result.EnsureSuccessStatusCode();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public void Dispose()

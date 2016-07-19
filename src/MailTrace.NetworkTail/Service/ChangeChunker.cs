@@ -27,14 +27,16 @@
             _timer = new Timer
             {
                 Interval = MinimalInterval,
-                AutoReset = false,
+                AutoReset = true,
                 Enabled = false
             };
+
             _timer.Elapsed += (sender, args) => SendQueue();
         }
 
         private void SendQueue()
         {
+            _timer.Stop();
             var message = string.Join("", _queue.GetConsumingEnumerable().Take(_queue.Count));
             OnChanged(message);
         }
@@ -43,6 +45,8 @@
         {
             _queue.Add(args.Value);
             _timer.Start();
+
+            Console.WriteLine(_queue.Count);
         }
 
         protected virtual void OnChanged(string e)

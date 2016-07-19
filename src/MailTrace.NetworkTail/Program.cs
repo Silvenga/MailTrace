@@ -14,8 +14,6 @@
             var chunker = new ChangeChunker(breakLineBuffer);
             var transport = new TraceNetworkChangeTransporter(chunker, args.Last());
 
-            chunker.Changed += (sender, eventArgs) => Console.WriteLine(eventArgs.Value);
-
             tailer.Start();
 
             Console.WriteLine("Ready");

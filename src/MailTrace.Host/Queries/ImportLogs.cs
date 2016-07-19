@@ -1,5 +1,6 @@
 ﻿namespace MailTrace.Host.Queries
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -63,6 +64,8 @@
                 _context.EmailProperties.AddRange(lines);
 
                 var changed = await _context.SaveChangesAsync();
+
+                Console.WriteLine($"Changed: {changed}");
 
                 return new ImportLogs.Result
                 {

@@ -1,9 +1,9 @@
 ﻿namespace MailTrace.Host.Selfhost
 {
     using System;
+    using System.Linq;
 
     using MailTrace.Data.Postgresql;
-    using MailTrace.Host;
     using MailTrace.Host.Data;
 
     using Microsoft.Owin.Hosting;
@@ -12,7 +12,7 @@
     {
         private static void Main(string[] args)
         {
-            const string baseAddress = "http://localhost:9900/";
+            var baseAddress = args.FirstOrDefault() ?? "http://localhost:9900";
 
             Startup.PostConfigureKernel += kernel => { kernel.Bind<TraceContext>().To<PostgresqlTraceContext>(); };
 

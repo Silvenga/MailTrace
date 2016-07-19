@@ -51,7 +51,7 @@
             var tuples = message.Split(',').Select(x => x.Split('='));
             foreach (var tuple in tuples.Where(x => x.Length == 2))
             {
-                yield return new LineAttribute(tuple.First(), tuple.Last());
+                yield return new LineAttribute(tuple.First().Trim(), tuple.Last().Trim());
             }
         }
     }

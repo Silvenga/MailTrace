@@ -10,11 +10,15 @@
         static void Main(string[] args)
         {
             var tailer = new ChangeTailer(args.First());
+            var breakLineBuffer = new BreakLineBuffer(tailer);
+            var chunker = new ChangeChunker(breakLineBuffer);
+            var transport = new TraceNetworkChangeTransporter(chunker, args.Last());
 
-            tailer.Changed += (sender, s) => Console.Write(s);
+            chunker.Changed += (sender, eventArgs) => Console.WriteLine(eventArgs.Value);
 
             tailer.Start();
 
+            Console.WriteLine("Ready");
             Console.ReadLine();
         }
     }

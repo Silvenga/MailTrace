@@ -136,6 +136,7 @@
     <Compile Include="Ninject\KernelConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\ImportLogs.cs" />
+    <Compile Include="Queries\ListEmails.cs" />
     <Compile Include="Queries\ListLogs.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

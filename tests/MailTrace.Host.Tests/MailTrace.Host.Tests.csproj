@@ -139,10 +139,14 @@
     <Compile Include="LogProcessing\LogParserFacts.cs" />
     <Compile Include="MediatRFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\ListEmailFacts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="Assets\mail.log">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Defered\EmailProperties.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

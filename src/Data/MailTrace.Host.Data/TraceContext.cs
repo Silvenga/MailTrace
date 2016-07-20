@@ -8,7 +8,7 @@
 
     public class TraceContext : DbContext
     {
-        protected TraceContext() : base(nameof(TraceContext))
+        public TraceContext() : base(nameof(TraceContext))
         {
         }
 

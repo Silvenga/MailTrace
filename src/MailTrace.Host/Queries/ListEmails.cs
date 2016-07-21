@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using AutoMapper.Configuration;
+
     using MailTrace.Host.Data;
 
     using MediatR;
@@ -53,24 +55,42 @@
 
         public ListEmails.Result Handle(ListEmails.Query message)
         {
-            var a = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
-                    let lasts = _context.EmailProperties.Where(x => x.QueueId == m.QueueId).OrderByDescending(x => x.SourceTime)
-                    select new ListEmails.Email
+            var c = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
+                    join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                    where new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(attr.Key)
+                    select new
                     {
                         MessageId = m.Value,
-                        To = lasts.FirstOrDefault(x => x.Key == "to").Value,
-                        DsnCode = lasts.FirstOrDefault(x => x.Key == "dsn").Value,
-                        Delay = lasts.FirstOrDefault(x => x.Key == "delay").Value,
-                        Status = lasts.FirstOrDefault(x => x.Key == "status").Value,
-                        Size = lasts.FirstOrDefault(x => x.Key == "size").Value,
-                        From = lasts.FirstOrDefault(x => x.Key == "from").Value,
+                        attr.Key,
+                        attr.Value,
+                        attr.SourceTime
                     };
 
-            var b = a.ToList();
+            var d = c.AsEnumerable()
+                     .GroupBy(x => x.MessageId)
+                     .Select(
+                         g =>
+                             new
+                             {
+                                 g.Key,
+                                 Group =
+                                     g.ToLookup(x => x.Key).
+                                       ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value).FirstOrDefault())
+                             })
+                     .Select(x => new ListEmails.Email
+                     {
+                         MessageId = x.Key,
+                         To = x.Group.GetOrDefault("to"),
+                         DsnCode = x.Group.GetOrDefault("dsn"),
+                         Delay = x.Group.GetOrDefault("delay"),
+                         Status = x.Group.GetOrDefault("status"),
+                         Size = x.Group.GetOrDefault("size"),
+                         From = x.Group.GetOrDefault("from"),
+                     });
 
             return new ListEmails.Result
             {
-                Logs = b
+                Logs = d.ToList()
             };
         }
     }

@@ -58,14 +58,19 @@
                     select new ListEmails.Email
                     {
                         MessageId = m.Value,
-                        To = lasts.FirstOrDefault(x => x.Key == "from").Value,
-                        DsnCode = lasts.FirstOrDefault(x => x.Key == "dsn").Value
+                        To = lasts.FirstOrDefault(x => x.Key == "to").Value,
+                        DsnCode = lasts.FirstOrDefault(x => x.Key == "dsn").Value,
+                        Delay = lasts.FirstOrDefault(x => x.Key == "delay").Value,
+                        Status = lasts.FirstOrDefault(x => x.Key == "status").Value,
+                        Size = lasts.FirstOrDefault(x => x.Key == "size").Value,
+                        From = lasts.FirstOrDefault(x => x.Key == "from").Value,
                     };
 
             var b = a.ToList();
 
             return new ListEmails.Result
             {
+                Logs = b
             };
         }
     }

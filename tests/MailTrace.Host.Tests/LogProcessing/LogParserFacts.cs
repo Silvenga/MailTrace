@@ -23,7 +23,7 @@
                 "16283",
                 "EF59F17F531",
                 "client=localhost[127.0.0.1]",
-                new LineAttribute[]
+                new[]
                 {
                     new LineAttribute("client", "localhost[127.0.0.1]"),
                 }
@@ -37,7 +37,7 @@
                 "16286",
                 "EF59F17F531",
                 "message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>",
-                new LineAttribute[]
+                new[]
                 {
                     new LineAttribute("message-id", "<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>")
                 }
@@ -66,6 +66,25 @@
                 "connect from localhost[127.0.0.1]",
                 new LineAttribute[]
                 {
+                }
+            },
+            new object[]
+            {
+                "Jul 20 00:40:16 d0 postfix/smtp[15103]: 6ECC317F531: to=<check-auth@verifier.port25.com>, relay=verifier.port25.com[38.95.177.200]:25, delay=0.87, delays=0.56/0.01/0.16/0.14, dsn=2.6.0, status=sent (250 2.6.0 message received)",
+                new DateTime(DateTime.Today.Year, 7, 20, 0, 40, 16),
+                "d0",
+                "postfix/smtp",
+                "15103",
+                "6ECC317F531",
+                "to=<check-auth@verifier.port25.com>, relay=verifier.port25.com[38.95.177.200]:25, delay=0.87, delays=0.56/0.01/0.16/0.14, dsn=2.6.0, status=sent (250 2.6.0 message received)",
+                new[]
+                {
+                    new LineAttribute("to", "<check-auth@verifier.port25.com>"),
+                    new LineAttribute("relay", "verifier.port25.com[38.95.177.200]:25"),
+                    new LineAttribute("delay", "0.87"),
+                    new LineAttribute("delays", "0.56/0.01/0.16/0.14"),
+                    new LineAttribute("dsn", "2.6.0"),
+                    new LineAttribute("status", "sent (250 2.6.0 message received)"),
                 }
             }
         };

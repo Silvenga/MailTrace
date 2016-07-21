@@ -45,8 +45,6 @@
         {
             _queue.Add(args.Value);
             _timer.Start();
-
-            Console.WriteLine(_queue.Count);
         }
 
         protected virtual void OnChanged(string e)

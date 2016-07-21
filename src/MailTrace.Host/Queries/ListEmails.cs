@@ -40,7 +40,7 @@
 
             public string Size { get; set; }
 
-            public DateTime LastUpdate { get; set; }
+            public DateTime FirstSeen { get; set; }
         }
     }
 
@@ -55,42 +55,45 @@
 
         public ListEmails.Result Handle(ListEmails.Query message)
         {
-            var c = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
-                    join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                    where new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(attr.Key)
-                    select new
-                    {
-                        MessageId = m.Value,
-                        attr.Key,
-                        attr.Value,
-                        attr.SourceTime
-                    };
+            var query = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
+                        join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                        where new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(attr.Key)
+                        select new
+                        {
+                            MessageId = m.Value,
+                            FirstSeen = m.SourceTime,
+                            attr.Key,
+                            attr.Value,
+                            attr.SourceTime
+                        };
 
-            var d = c.AsEnumerable()
-                     .GroupBy(x => x.MessageId)
-                     .Select(
-                         g =>
-                             new
-                             {
-                                 g.Key,
-                                 Group =
-                                     g.ToLookup(x => x.Key).
-                                       ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value).FirstOrDefault())
-                             })
-                     .Select(x => new ListEmails.Email
-                     {
-                         MessageId = x.Key,
-                         To = x.Group.GetOrDefault("to"),
-                         DsnCode = x.Group.GetOrDefault("dsn"),
-                         Delay = x.Group.GetOrDefault("delay"),
-                         Status = x.Group.GetOrDefault("status"),
-                         Size = x.Group.GetOrDefault("size"),
-                         From = x.Group.GetOrDefault("from"),
-                     });
+            var projection = query.AsEnumerable()
+                                  .GroupBy(x => new {x.MessageId, x.FirstSeen})
+                                  .Select(
+                                      g =>
+                                          new
+                                          {
+                                              g.Key.MessageId,
+                                              g.Key.FirstSeen,
+                                              Group =
+                                                  g.ToLookup(x => x.Key).
+                                                    ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value).FirstOrDefault())
+                                          })
+                                  .Select(x => new ListEmails.Email
+                                  {
+                                      MessageId = x.MessageId,
+                                      FirstSeen = x.FirstSeen.Value,
+                                      To = x.Group.GetOrDefault("to"),
+                                      DsnCode = x.Group.GetOrDefault("dsn"),
+                                      Delay = x.Group.GetOrDefault("delay"),
+                                      Status = x.Group.GetOrDefault("status"),
+                                      Size = x.Group.GetOrDefault("size"),
+                                      From = x.Group.GetOrDefault("from"),
+                                  });
 
             return new ListEmails.Result
             {
-                Logs = d.ToList()
+                Logs = projection.ToList()
             };
         }
     }

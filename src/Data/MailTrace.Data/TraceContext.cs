@@ -1,10 +1,10 @@
-﻿namespace MailTrace.Host.Data
+﻿namespace MailTrace.Data
 {
     using System;
     using System.Data.Common;
     using System.Data.Entity;
 
-    using MailTrace.Host.Data.Entities;
+    using MailTrace.Data.Entities;
 
     public class TraceContext : DbContext
     {

@@ -8,7 +8,7 @@
     using global::Ninject;
 
     using MailTrace.Host.Controllers;
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
     using MailTrace.Host.Ninject;
     using MailTrace.Host.Queries;
     using MailTrace.Host.Tests.Fixtures;

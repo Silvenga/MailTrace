@@ -4,7 +4,7 @@
     using System.Linq;
 
     using MailTrace.Data.Postgresql;
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
 
     using Microsoft.Owin.Hosting;
 

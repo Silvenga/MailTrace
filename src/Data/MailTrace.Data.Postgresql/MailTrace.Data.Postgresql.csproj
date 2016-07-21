@@ -74,12 +74,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MailTrace.Host.Data\MailTrace.Host.Data.csproj">
-      <Project>{ddb7f080-7a44-4984-b2c3-cf592a9c2e0a}</Project>
-      <Name>MailTrace.Host.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -93,6 +87,12 @@
     <EmbeddedResource Include="Migrations\201607210228514_V2.resx">
       <DependentUpon>201607210228514_V2.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MailTrace.Data\MailTrace.Data.csproj">
+      <Project>{ddb7f080-7a44-4984-b2c3-cf592a9c2e0a}</Project>
+      <Name>MailTrace.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

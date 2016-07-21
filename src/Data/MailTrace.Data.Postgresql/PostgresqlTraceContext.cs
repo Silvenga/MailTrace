@@ -4,7 +4,7 @@
     using System.Data.Entity.Migrations;
 
     using MailTrace.Data.Postgresql.Migrations;
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
 
     public class PostgresqlTraceContext : TraceContext
     {

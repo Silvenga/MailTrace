@@ -7,8 +7,8 @@
     <ProjectGuid>{DDB7F080-7A44-4984-B2C3-CF592A9C2E0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MailTrace.Host.Data</RootNamespace>
-    <AssemblyName>MailTrace.Host.Data</AssemblyName>
+    <RootNamespace>MailTrace.Data</RootNamespace>
+    <AssemblyName>MailTrace.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -8,7 +8,7 @@
 
     using FluentAssertions;
 
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
     using MailTrace.Host.Queries;
 
     using Xunit;

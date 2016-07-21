@@ -6,7 +6,7 @@
 
     using AutoMapper.Configuration;
 
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
 
     using MediatR;
 

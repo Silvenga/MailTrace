@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Data.Entities
+﻿namespace MailTrace.Data.Entities
 {
     using System.ComponentModel.DataAnnotations.Schema;
 

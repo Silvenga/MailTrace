@@ -7,7 +7,7 @@
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
 
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
 
     using MediatR;
 

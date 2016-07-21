@@ -7,8 +7,8 @@
 
     using FluentValidation;
 
-    using MailTrace.Host.Data;
-    using MailTrace.Host.Data.Entities;
+    using MailTrace.Data;
+    using MailTrace.Data.Entities;
     using MailTrace.Host.LogProcessing;
 
     using MediatR;

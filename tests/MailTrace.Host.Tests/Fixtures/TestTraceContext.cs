@@ -2,7 +2,7 @@
 {
     using System.Data.Common;
 
-    using MailTrace.Host.Data;
+    using MailTrace.Data;
 
     public class TestTraceContext : TraceContext
     {

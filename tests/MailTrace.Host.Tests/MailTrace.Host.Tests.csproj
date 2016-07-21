@@ -152,9 +152,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Data\MailTrace.Host.Data\MailTrace.Host.Data.csproj">
-      <Project>{DDB7F080-7A44-4984-B2C3-CF592A9C2E0A}</Project>
-      <Name>MailTrace.Host.Data</Name>
+    <ProjectReference Include="..\..\src\Data\MailTrace.Data\MailTrace.Data.csproj">
+      <Project>{ddb7f080-7a44-4984-b2c3-cf592a9c2e0a}</Project>
+      <Name>MailTrace.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\MailTrace.Host\MailTrace.Host.csproj">
       <Project>{866717da-cb0b-487b-9a09-c46ad0a56898}</Project>

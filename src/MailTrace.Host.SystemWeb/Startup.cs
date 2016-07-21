@@ -1,6 +1,12 @@
-﻿namespace MailTrace.Host.SystemWeb
+﻿using MailTrace.Host.SystemWeb;
+
+using Microsoft.Owin;
+
+[assembly: OwinStartup(typeof(Startup))]
+
+namespace MailTrace.Host.SystemWeb
 {
-    using System;
+    using System.Diagnostics;
 
     using MailTrace.Data;
     using MailTrace.Data.Postgresql;
@@ -13,10 +19,12 @@
         {
             PostConfigureKernel += kernel => { kernel.Bind<TraceContext>().To<PostgresqlTraceContext>(); };
 
-            Console.WriteLine("Running Migration...");
+            Trace.WriteLine("Running Migration...");
 
             var context = new PostgresqlTraceContext();
             context.Migrate();
+
+            Trace.WriteLine("Completed Migration...");
 
             base.Configuration(app);
         }

@@ -1,8 +1,4 @@
-﻿using Microsoft.Owin;
-
-[assembly: OwinStartup(typeof(MailTrace.Host.Startup))]
-
-namespace MailTrace.Host
+﻿namespace MailTrace.Host
 {
     using System;
     using System.Web.Http;
@@ -21,7 +17,7 @@ namespace MailTrace.Host
 
         public virtual void Configuration(IAppBuilder app)
         {
-           ConfigureNinject(app);
+            ConfigureNinject(app);
             ConfigureWebApi(app);
         }
 

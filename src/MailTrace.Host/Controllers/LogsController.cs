@@ -17,10 +17,20 @@
             _mediator = mediator;
         }
 
+        //[Route("list"), HttpGet]
+        //public IHttpActionResult ListLogsAsync([FromUri] ListLogs.Query query)
+        //{
+        //    query = query ?? new ListLogs.Query();
+
+        //    var result = _mediator.Send(query);
+
+        //    return Ok(result);
+        //}
+
         [Route("list"), HttpGet]
-        public IHttpActionResult ListLogsAsync([FromUri] ListLogs.Query query)
+        public IHttpActionResult ListEmailsAsync([FromUri] ListEmails.Query query)
         {
-            query = query ?? new ListLogs.Query();
+            query = query ?? new ListEmails.Query();
 
             var result = _mediator.Send(query);
 

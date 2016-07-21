@@ -19,7 +19,7 @@ namespace MailTrace.Host
     {
         [ThreadStatic] public static Action<IKernel> PostConfigureKernel;
 
-        public void Configuration(IAppBuilder app)
+        public virtual void Configuration(IAppBuilder app)
         {
            ConfigureNinject(app);
             ConfigureWebApi(app);

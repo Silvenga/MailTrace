@@ -24,6 +24,10 @@
             public string From { get; set; }
 
             public string To { get; set; }
+
+            public int? PageSize { get; set; }
+
+            public int? Page { get; set; }
         }
 
         public class Result
@@ -62,6 +66,10 @@
 
         public ListEmails.Result Handle(ListEmails.Query message)
         {
+            var page = message.Page ?? 1;
+            var takeSize = message.PageSize ?? 50;
+            var skipSize = takeSize * (page - 1);
+
             var toPredicate = PredicateBuilder.True<EmailProperty>();
             if (message.To != null)
             {
@@ -82,26 +90,37 @@
                 sourcePredicate = sourcePredicate.And(x => x.Key == "message-id" && x.SourceTime >= message.After);
             }
 
+            var baseQuery = _context
+                .EmailProperties
+                .AsExpandable()
+                .Where(x => x.Key == "message-id")
+                .OrderByDescending(x => x.SourceTime)
+                .Skip(skipSize)
+                .Take(takeSize);
             var filterToQuery = _context
                 .EmailProperties
+                .AsExpandable()
                 .Where(toPredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
             var filterFromQuery = _context
                 .EmailProperties
+                .AsExpandable()
                 .Where(fromPredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
             var filterSourceTimeQuery = _context
                 .EmailProperties
+                .AsExpandable()
                 .Where(sourcePredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
             var filterPropertyQuery = _context
                 .EmailProperties
+                .AsExpandable()
                 .Where(x => new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(x.Key));
 
-            var query = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
+            var query = from m in baseQuery
                         join attr in
                             filterPropertyQuery on new {m.QueueId, m.Host}
                             equals new {attr.QueueId, attr.Host}

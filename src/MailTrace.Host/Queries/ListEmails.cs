@@ -6,7 +6,10 @@
 
     using AutoMapper.Configuration;
 
+    using LinqKit;
+
     using MailTrace.Data;
+    using MailTrace.Data.Entities;
 
     using MediatR;
 
@@ -17,6 +20,10 @@
             public DateTime? Before { get; set; }
 
             public DateTime? After { get; set; }
+
+            public string From { get; set; }
+
+            public string To { get; set; }
         }
 
         public class Result
@@ -55,9 +62,58 @@
 
         public ListEmails.Result Handle(ListEmails.Query message)
         {
+            var toPredicate = PredicateBuilder.True<EmailProperty>();
+            if (message.To != null)
+            {
+                toPredicate = toPredicate.And(x => x.Key == "to" && x.Value.Contains(message.To));
+            }
+            var fromPredicate = PredicateBuilder.True<EmailProperty>();
+            if (message.From != null)
+            {
+                fromPredicate = fromPredicate.And(x => x.Key == "from" && x.Value.Contains(message.From));
+            }
+            var sourcePredicate = PredicateBuilder.True<EmailProperty>();
+            if (message.Before != null)
+            {
+                sourcePredicate = sourcePredicate.And(x => x.Key == "message-id" && x.SourceTime <= message.Before);
+            }
+            if (message.After != null)
+            {
+                sourcePredicate = sourcePredicate.And(x => x.Key == "message-id" && x.SourceTime >= message.After);
+            }
+
+            var filterToQuery = _context
+                .EmailProperties
+                .Where(toPredicate)
+                .Select(x => new {x.QueueId, x.Host})
+                .Distinct();
+            var filterFromQuery = _context
+                .EmailProperties
+                .Where(fromPredicate)
+                .Select(x => new {x.QueueId, x.Host})
+                .Distinct();
+            var filterSourceTimeQuery = _context
+                .EmailProperties
+                .Where(sourcePredicate)
+                .Select(x => new {x.QueueId, x.Host})
+                .Distinct();
+            var filterPropertyQuery = _context
+                .EmailProperties
+                .Where(x => new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(x.Key));
+
             var query = from m in _context.EmailProperties.Where(x => x.Key == "message-id")
-                        join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                        where new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(attr.Key)
+                        join attr in
+                            filterPropertyQuery on new {m.QueueId, m.Host}
+                            equals new {attr.QueueId, attr.Host}
+                        join filterTo in
+                            filterToQuery on new {m.QueueId, m.Host}
+                            equals new {filterTo.QueueId, filterTo.Host}
+                        join filterFrom in
+                            filterFromQuery on new {m.QueueId, m.Host}
+                            equals new {filterFrom.QueueId, filterFrom.Host}
+                        join filterSourceTime in
+                            filterSourceTimeQuery on new {m.QueueId, m.Host}
+                            equals new {filterSourceTime.QueueId, filterSourceTime.Host}
                         select new
                         {
                             MessageId = m.Value,

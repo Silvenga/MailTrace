@@ -4,6 +4,7 @@
     using System.Web.Http;
 
     using MailTrace.Host.Queries;
+    using MailTrace.Host.Queries.Logs;
 
     using MediatR;
 

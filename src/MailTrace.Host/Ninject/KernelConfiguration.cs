@@ -7,6 +7,7 @@
     using global::Ninject.Planning.Bindings.Resolvers;
 
     using MailTrace.Host.Queries;
+    using MailTrace.Host.Queries.Logs;
 
     using MediatR;
 

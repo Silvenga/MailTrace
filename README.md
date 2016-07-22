@@ -6,4 +6,5 @@
 
 ## TODO
 
-[ ] Handle Dups
+- [ ] Handle dup logs
+- [ ] Preserve log lines when decomposed

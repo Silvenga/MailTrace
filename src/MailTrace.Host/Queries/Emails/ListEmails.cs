@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Queries
+﻿namespace MailTrace.Host.Queries.Emails
 {
     using System;
     using System.Collections.Generic;

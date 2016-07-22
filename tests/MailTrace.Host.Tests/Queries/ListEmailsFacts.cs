@@ -9,15 +9,15 @@
     using FluentAssertions;
 
     using MailTrace.Data;
-    using MailTrace.Host.Queries;
+    using MailTrace.Host.Queries.Emails;
 
     using Xunit;
 
-    public class ListEmailFacts
+    public class ListEmailsFacts
     {
         private readonly TraceContext _context;
 
-        public ListEmailFacts()
+        public ListEmailsFacts()
         {
             var loader = new CsvDataLoader(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Defered"));
 

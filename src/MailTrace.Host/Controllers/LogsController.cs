@@ -27,16 +27,6 @@
         //    return Ok(result);
         //}
 
-        [Route("list"), HttpGet]
-        public IHttpActionResult ListEmailsAsync([FromUri] ListEmails.Query query)
-        {
-            query = query ?? new ListEmails.Query();
-
-            var result = _mediator.Send(query);
-
-            return Ok(result);
-        }
-
         [Route("import"), HttpPost]
         public async Task<IHttpActionResult> ImportAsync([FromBody] ImportLogs.Command command)
         {

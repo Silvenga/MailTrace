@@ -6,9 +6,13 @@
 
     using MediatR;
 
+    using NLog;
+
     [RoutePrefix("api/emails")]
     public class EmailsController : ApiController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IMediator _mediator;
 
         public EmailsController(IMediator mediator)

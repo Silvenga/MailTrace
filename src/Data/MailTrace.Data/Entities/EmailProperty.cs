@@ -24,5 +24,10 @@
 
         [Index, Required]
         public DateTime? SourceTime { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Host: {Host}, QueueId: {QueueId}, Key: {Key}, Value: {Value}, SourceTime: {SourceTime}";
+        }
     }
 }

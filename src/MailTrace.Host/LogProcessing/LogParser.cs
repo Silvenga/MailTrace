@@ -8,8 +8,12 @@
 
     using MailTrace.Host.Models.Logs;
 
+    using NLog;
+
     public class LogParser
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private const string PostfixDateFormat = "MMM dd HH:mm:ss";
 
         public IEnumerable<LogLine> Parse(IEnumerable<string> lines)
@@ -21,8 +25,9 @@
         {
             var result = new LogLine();
 
+            // Is QueueId HEX?
             var match = Regex.Match(line,
-                @"^(?<date>.{15}) (?<host>\w+) (?<serviceName>.+)\[(?<servicePid>\d+)\]: ((?<queueId>.+): ){0,1}(?<message>.+)$");
+                @"^(?<date>[:\w ]{15}) (?<host>\w+) (?<serviceName>.+)\[(?<servicePid>\d+)\]: ((?<queueId>[A-Z\d]{11}): ){0,1}(?<message>.+)$");
 
             if (!match.Success)
             {
@@ -42,6 +47,8 @@
             result.Attributes = result.Service.Name.StartsWith("postfix")
                 ? ParseTuples(result.Message).ToList()
                 : new List<LineAttribute>();
+
+            Logger.Info(result.ToString());
 
             return result;
         }

@@ -39,5 +39,10 @@
                 return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Value != null ? Value.GetHashCode() : 0);
             }
         }
+
+        public override string ToString()
+        {
+            return $"{Name}={Value}";
+        }
     }
 }

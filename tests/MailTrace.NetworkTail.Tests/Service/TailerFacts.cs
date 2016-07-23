@@ -38,12 +38,12 @@
         }
 
         [Fact]
-        public void When_data_exists_on_start_tailer_fires_changed()
+        public void When_data_exists_on_start_dont_fire_event()
         {
             var content = AutoFixture.Create<string>();
             _streamWriter.Write(content);
 
-            var result = "";
+            string result = null;
 
             var tailer = new ChangeTailer(_path);
             tailer.Changed += (sender, s) =>
@@ -54,10 +54,10 @@
 
             // Act
             tailer.Start();
-            _waiter.WaitOne(1000);
+            _waiter.WaitOne(100).Should().BeFalse();
 
             // Assert
-            result.Should().Be(content);
+            result.Should().Be(null);
         }
 
         [Fact]
@@ -80,9 +80,9 @@
 
             // Act
             tailer.Start();
-            _waiter.WaitOne(1000);
+            _waiter.WaitOne(200).Should().BeFalse();
             _streamWriter.Write(content);
-            _waiter.WaitOne(1000);
+            _waiter.WaitOne(1000).Should().BeTrue();
 
             // Assert
             result.Should().Be(content);
@@ -108,7 +108,7 @@
 
             // Act
             tailer.Start();
-            _waiter.WaitOne(1000).Should().BeTrue();
+            _waiter.WaitOne(1000).Should().BeFalse();
 
             Dispose();
             CreateTempFile();
@@ -140,7 +140,7 @@
 
             // Act
             tailer.Start();
-            _waiter.WaitOne(1000).Should().BeTrue();
+            _waiter.WaitOne(1000).Should().BeFalse();
 
             Dispose();
             CreateTempFile();

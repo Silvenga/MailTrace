@@ -16,6 +16,25 @@
         {
             new object[]
             {
+                "Jul 22 23:37:33 d0 postfix/smtp[22416]: 6A57017F4EF: to=<test@mxmirror.net>, relay=mxmirror.net[195.154.231.137]:25, delay=2.3, delays=0.86/0.01/1.1/0.35, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 2F9C05EFE)",
+                new DateTime(DateTime.Today.Year, 7, 22, 23, 37, 33),
+                "d0",
+                "postfix/smtp",
+                "22416",
+                "6A57017F4EF",
+                "to=<test@mxmirror.net>, relay=mxmirror.net[195.154.231.137]:25, delay=2.3, delays=0.86/0.01/1.1/0.35, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 2F9C05EFE)",
+                new[]
+                {
+                    new LineAttribute("to", "<test@mxmirror.net>"),
+                    new LineAttribute("relay", "mxmirror.net[195.154.231.137]:25"),
+                    new LineAttribute("delay", "2.3"),
+                    new LineAttribute("delays", "0.86/0.01/1.1/0.35"),
+                    new LineAttribute("dsn", "2.0.0"),
+                    new LineAttribute("status", "sent (250 2.0.0 Ok: queued as 2F9C05EFE)"),
+                }
+            },
+            new object[]
+            {
                 "Jul 10 20:31:31 d0 postfix/smtpd[16283]: EF59F17F531: client=localhost[127.0.0.1]",
                 new DateTime(DateTime.Today.Year, 7, 10, 20, 31, 31),
                 "d0",
@@ -86,7 +105,7 @@
                     new LineAttribute("dsn", "2.6.0"),
                     new LineAttribute("status", "sent (250 2.6.0 message received)"),
                 }
-            }
+            },
         };
 
         [Theory, MemberData(nameof(LogLines))]

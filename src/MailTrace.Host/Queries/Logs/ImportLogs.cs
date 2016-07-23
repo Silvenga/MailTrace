@@ -1,6 +1,5 @@
 ﻿namespace MailTrace.Host.Queries.Logs
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,6 +11,8 @@
     using MailTrace.Host.LogProcessing;
 
     using MediatR;
+
+    using NLog;
 
     public class ImportLogs
     {
@@ -37,6 +38,8 @@
 
     public class ImportLogsHandler : IAsyncRequestHandler<ImportLogs.Command, ImportLogs.Result>
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly TraceContext _context;
         private readonly LogParser _parser;
 
@@ -59,13 +62,21 @@
                         Key = attribute.Name,
                         Value = attribute.Value,
                         SourceTime = line.SourceTime
-                    });
+                    })
+                    .ToList();
+
+                Logger.Info("-------------------------");
+                foreach (var emailProperty in lines)
+                {
+                    Logger.Info(emailProperty.ToString());
+                }
+                Logger.Info("-------------------------");
 
                 _context.EmailProperties.AddRange(lines);
 
                 var changed = await _context.SaveChangesAsync();
 
-                Console.WriteLine($"Changed: {changed}");
+                Logger.Info($"Changed: {changed}");
 
                 return new ImportLogs.Result
                 {

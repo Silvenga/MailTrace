@@ -1,0 +1,19 @@
+Id,Host,QueueId,Key,Value,SourceTime
+60997,d0,10DFE17F616,Hostname,BN6PR10MB1474.namprd10.prod.outlook.com] 14117 bytes in 0.252,51:14.0
+60996,d0,10DFE17F616,dsn,2.6.0,51:14.0
+60995,d0,10DFE17F616,delays,0.79/0.02/0.91/2.7,51:14.0
+60994,d0,10DFE17F616,delay,4.5,51:14.0
+60993,d0,10DFE17F616,relay,silvenga-com.mail.protection.outlook.com[216.32.211.42]:25,51:14.0
+60992,d0,10DFE17F616,orig_to,<test@defy.xyz>,51:14.0
+60991,d0,10DFE17F616,to,<m@silvenga.com>,51:14.0
+60990,d0,10DFE17F616,status,sent (250 2.0.0 Ok: queued as AC3215EFE),51:11.0
+60989,d0,10DFE17F616,dsn,2.0.0,51:11.0
+60988,d0,10DFE17F616,delays,0.79/0.01/0.97/0.34,51:11.0
+60987,d0,10DFE17F616,delay,2.1,51:11.0
+60986,d0,10DFE17F616,relay,mxmirror.net[2001:bc9:3cfe:100::100]:25,51:11.0
+60985,d0,10DFE17F616,to,<test@mxmirror.net>,51:11.0
+60984,d0,10DFE17F616,nrcpt,2 (queue active),51:10.0
+60983,d0,10DFE17F616,size,6394,51:10.0
+60982,d0,10DFE17F616,from,<m@silvenga.com>,51:10.0
+60981,d0,10DFE17F616,message-id,<sig.90121630db.MWHPR10MB148583C3C6771062B9533744D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>,51:10.0
+60980,d0,10DFE17F616,client,localhost[127.0.0.1],51:10.0

@@ -16,5 +16,10 @@
         public string Message { get; set; }
 
         public IList<LineAttribute> Attributes { get; set; }
+
+        public override string ToString()
+        {
+            return $"{SourceTime} {Host} {Service} {QueueId} {Message}: {string.Join(", ", Attributes)}";
+        }
     }
 }

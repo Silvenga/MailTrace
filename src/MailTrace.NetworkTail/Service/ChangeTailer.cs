@@ -11,7 +11,7 @@
     public class ChangeTailer : IChangable
     {
         private readonly string _filename;
-        private long _currentSeek;
+        private long _currentSeek = -1;
 
         public event EventHandler<ChangedEventArgs> Changed;
 
@@ -53,6 +53,10 @@
             using (var fileStream = File.Open(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
             {
                 var possibleSeek = fileStream.Length;
+                if (_currentSeek == -1)
+                {
+                    _currentSeek = possibleSeek;
+                }
                 var seekDifference = possibleSeek - _currentSeek;
 
                 if (seekDifference < 0)

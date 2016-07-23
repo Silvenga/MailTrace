@@ -5,8 +5,12 @@
     using MailTrace.NetworkTail.Interfaces;
     using MailTrace.NetworkTail.Models;
 
+    using NLog;
+
     public class TraceNetworkChangeTransporter : IChangable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly IChangable _changable;
         private readonly IHttpClient _client;
 
@@ -22,6 +26,7 @@
 
         private void ChangableOnChanged(object sender, ChangedEventArgs changedEventArgs)
         {
+            Logger.Info("Event Recieved.");
             OnChanged(changedEventArgs);
 
             try
@@ -34,13 +39,14 @@
                 };
 
                 var result = _client.PostAsJsonAsync("/api/logs/import", command).Result;
+                Logger.Info(result.StatusCode);
                 result.EnsureSuccessStatusCode();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Logger.Error(e);
             }
+            Logger.Info("Event Commited.");
         }
 
         public void Dispose()

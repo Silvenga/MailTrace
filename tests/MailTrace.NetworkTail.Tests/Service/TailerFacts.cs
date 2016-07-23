@@ -114,7 +114,7 @@
             CreateTempFile();
 
             _streamWriter.Write(content);
-            _waiter.WaitOne(1000).Should().BeTrue();
+            _waiter.WaitOne(10 * 1000).Should().BeTrue();
 
             // Assert
             result.Should().Be(content);
@@ -147,7 +147,7 @@
 
             _streamWriter.Write(AutoFixture.Create<string>());
             _streamWriter.Write(content);
-            _waiter.WaitOne(1000).Should().BeTrue();
+            _waiter.WaitOne(10 * 1000).Should().BeTrue();
 
             // Assert
             result.Should().Be(content);

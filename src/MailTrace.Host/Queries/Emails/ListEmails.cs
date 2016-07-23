@@ -43,13 +43,9 @@
 
             public string MessageId { get; set; }
 
-            public string DsnCode { get; set; }
-
-            public string Status { get; set; }
-
-            public string Delay { get; set; }
-
             public string Size { get; set; }
+
+            public string NumberOfRecipients { get; set; }
 
             public DateTime FirstSeen { get; set; }
         }
@@ -118,7 +114,7 @@
             var filterPropertyQuery = _context
                 .EmailProperties
                 .AsExpandable()
-                .Where(x => new[] {"to", "dsn", "delay", "status", "size", "from"}.Contains(x.Key));
+                .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
 
             var query = from m in baseQuery
                         join attr in
@@ -159,11 +155,9 @@
                                       MessageId = x.MessageId,
                                       FirstSeen = x.FirstSeen.Value,
                                       To = string.Join(";", (x.Group.GetOrDefault("to") ?? Enumerable.Empty<string>()).Distinct()),
-                                      DsnCode = x.Group.GetOrDefault("dsn")?.FirstOrDefault(),
-                                      Delay = x.Group.GetOrDefault("delay")?.FirstOrDefault(),
-                                      Status = x.Group.GetOrDefault("status")?.FirstOrDefault(),
                                       Size = x.Group.GetOrDefault("size")?.FirstOrDefault(),
                                       From = x.Group.GetOrDefault("from")?.FirstOrDefault(),
+                                      NumberOfRecipients = x.Group.GetOrDefault("nrcpt")?.FirstOrDefault(),
                                   });
 
             return new ListEmails.Result

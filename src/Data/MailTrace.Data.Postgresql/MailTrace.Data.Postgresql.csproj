@@ -69,6 +69,10 @@
     <Compile Include="Migrations\201607210228514_V2.Designer.cs">
       <DependentUpon>201607210228514_V2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607232047030_V3.cs" />
+    <Compile Include="Migrations\201607232047030_V3.Designer.cs">
+      <DependentUpon>201607232047030_V3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PostgresqlTraceContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607210228514_V2.resx">
       <DependentUpon>201607210228514_V2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607232047030_V3.resx">
+      <DependentUpon>201607232047030_V3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

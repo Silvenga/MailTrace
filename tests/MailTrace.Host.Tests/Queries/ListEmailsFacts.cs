@@ -19,7 +19,7 @@
     {
         private static readonly Fixture AutoFixture = new Fixture();
 
-        const string AssetsDirectory = "Assets";
+        private const string AssetsDirectory = "Assets";
 
         [Fact]
         public void Can_get_list_of_emails()
@@ -70,9 +70,9 @@
 
             var email = result.Logs.First();
             email.From.Should().Be("<m@silvenga.com>");
-            email.FirstSeen.Should().Be(new DateTime(2016, 7, 22, 23, 51, 10)); // 
-            email.MessageId.Should().Be("<sig.90121630db.MWHPR10MB148583C3C6771062B9533744D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
-            email.Size.Should().Be("6394");
+            email.FirstSeen.Should().Be(new DateTime(2016, 7, 23, 16, 01, 00)); // 
+            email.MessageId.Should().Be("<sig.501269a179.MWHPR10MB1485930B3BAD1143C8684A43D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
+            email.Size.Should().Be("4160");
             email.NumberOfRecipients.Should().Be("2 (queue active)");
             email.To.Should().Be("<m@silvenga.com>;<test@mxmirror.net>");
         }
@@ -101,9 +101,9 @@
 
             var email = result.Logs.First();
             email.From.Should().Be("<m@silvenga.com>");
-            email.FirstSeen.Should().Be(new DateTime(2016, 7, 22, 23, 51, 10)); // 
-            email.MessageId.Should().Be("<sig.90121630db.MWHPR10MB148583C3C6771062B9533744D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
-            email.Size.Should().Be("6394");
+            email.FirstSeen.Should().Be(new DateTime(2016, 7, 23, 16, 01, 00)); // 
+            email.MessageId.Should().Be("<sig.501269a179.MWHPR10MB1485930B3BAD1143C8684A43D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
+            email.Size.Should().Be("4160");
             email.NumberOfRecipients.Should().Be("2 (queue active)");
             email.To.Should().Be("<m@silvenga.com>;<test@mxmirror.net>");
         }

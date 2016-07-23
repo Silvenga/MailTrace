@@ -15,26 +15,24 @@
 
     public class GetEmailFacts
     {
+        private const string AssetsDirectory = "Assets";
+
         private static readonly Fixture AutoFixture = new Fixture();
-
-        private readonly TraceContext _context;
-
-        public GetEmailFacts()
-        {
-            var loader = new CsvDataLoader(Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Defered"));
-
-            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
-            _context = new TraceContext(connection);
-        }
 
         [Fact]
         public void When_messageId_exists_return_email_and_attempts()
         {
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "Defered");
+            var loader = new CsvDataLoader(dataPath);
+
+            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var context = new TraceContext(connection);
+
             var query = new GetEmail.Query
             {
                 MessageId = "<a1468908015.96715@assp.silvenga.lan>"
             };
-            var handler = new GetEmailHandler(_context);
+            var handler = new GetEmailHandler(context);
 
             // Act
 
@@ -55,10 +53,40 @@
         }
 
         [Fact]
+        public void When_multiple_recipient()
+        {
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "MultipleTos");
+            var loader = new CsvDataLoader(dataPath);
+
+            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var context = new TraceContext(connection);
+
+            var query = new GetEmail.Query
+            {
+                MessageId = "<sig.501269a179.MWHPR10MB1485930B3BAD1143C8684A43D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>"
+            };
+            var handler = new GetEmailHandler(context);
+
+            // Act
+
+            var result = handler.Handle(query);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Attempts.Should().HaveCount(2);
+        }
+
+        [Fact]
         public void When_message_does_not_exist_return_null()
         {
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "Defered");
+            var loader = new CsvDataLoader(dataPath);
+
+            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var context = new TraceContext(connection);
+
             var query = AutoFixture.Create<GetEmail.Query>();
-            var handler = new GetEmailHandler(_context);
+            var handler = new GetEmailHandler(context);
 
             // Act
             var result = handler.Handle(query);

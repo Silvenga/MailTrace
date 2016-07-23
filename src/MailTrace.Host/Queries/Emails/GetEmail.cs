@@ -98,10 +98,11 @@
                                 attr.QueueId,
                                 attr.Key,
                                 attr.Value,
-                                attr.SourceTime
+                                attr.SourceTime,
+                                attr.LogId
                             })
                 .AsEnumerable()
-                .GroupBy(x => x.SourceTime)
+                .GroupBy(x => x.LogId)
                 .Select(g => g.ToLookup(x => x.Key).ToDictionary(x => x.Key, x => x.FirstOrDefault()));
 
             foreach (var attemptDictionary in attempts)

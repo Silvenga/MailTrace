@@ -48,6 +48,8 @@
                 ? ParseTuples(result.Message).ToList()
                 : new List<LineAttribute>();
 
+            result.LogId = Guid.NewGuid().ToString("N");
+
             Logger.Info(result.ToString());
 
             return result;

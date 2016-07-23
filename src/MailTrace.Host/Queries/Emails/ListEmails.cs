@@ -62,6 +62,9 @@
 
         public ListEmails.Result Handle(ListEmails.Query message)
         {
+            // TODO
+            // [ ] Reduce complexity of this query, R# is sad.
+
             var page = message.Page ?? 1;
             var takeSize = message.PageSize ?? 50;
             var skipSize = takeSize * (page - 1);

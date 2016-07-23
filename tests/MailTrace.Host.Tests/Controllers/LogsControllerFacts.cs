@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using FluentAssertions;
+
     using global::Ninject;
 
     using MailTrace.Host.Controllers;
@@ -41,7 +43,8 @@
             {
                 LogLines = new List<string>
                 {
-                    "Jul 10 20:31:32 d0 postfix/cleanup[16286]: EF59F17F531: message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>"
+                    "Jul 10 20:31:32 d0 postfix/cleanup[16286]: EF59F17F531: message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>",
+                    "Jul 10 20:31:32 d0 postfix/qmgr[13243]: EF59F17F531: from=<m@silvenga.com>, size=4213, nrcpt=1 (queue active)"
                 }
             };
 
@@ -53,6 +56,7 @@
             // Assert
 
             var results = context.EmailProperties.ToList();
+            results.Should().HaveCount(4);
         }
 
         public void Dispose()

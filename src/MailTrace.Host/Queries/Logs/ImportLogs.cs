@@ -61,7 +61,8 @@
                         Host = line.Host,
                         Key = attribute.Name,
                         Value = attribute.Value,
-                        SourceTime = line.SourceTime
+                        SourceTime = line.SourceTime,
+                        LogId = line.LogId
                     })
                     .ToList();
 

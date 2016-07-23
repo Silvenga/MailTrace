@@ -15,6 +15,8 @@
 
         public string Message { get; set; }
 
+        public string LogId { get; set; }
+
         public IList<LineAttribute> Attributes { get; set; }
 
         public override string ToString()

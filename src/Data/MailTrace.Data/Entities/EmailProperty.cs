@@ -16,6 +16,9 @@
         [Index(HostQueueIdIndex, 1), Required]
         public string QueueId { get; set; }
 
+        [Required, StringLength(32)]
+        public string LogId { get; set; }
+
         [Index, Required]
         public string Key { get; set; }
 
@@ -27,7 +30,7 @@
 
         public override string ToString()
         {
-            return $"Id: {Id}, Host: {Host}, QueueId: {QueueId}, Key: {Key}, Value: {Value}, SourceTime: {SourceTime}";
+            return $"Id: {Id}, Host: {Host}, QueueId: {QueueId}, Key: {Key}, Value: {Value}, SourceTime: {SourceTime}, LogId: {LogId}";
         }
     }
 }

@@ -21,8 +21,6 @@
         {
             public string MessageId { get; set; }
 
-            public string To { get; set; }
-
             public string From { get; set; }
 
             public string Size { get; set; }
@@ -48,6 +46,8 @@
 
             public string Delays { get; set; }
 
+            public string To { get; set; }
+
             public DateTime? SourceTime { get; set; }
         }
     }
@@ -65,7 +65,7 @@
         {
             var email = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
                          join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                         where new[] {"message-id", "to", "from", "size", "client"}.Contains(attr.Key)
+                         where new[] {"message-id", "from", "size", "client"}.Contains(attr.Key)
                          select new
                          {
                              attr.Key,
@@ -83,7 +83,6 @@
             var result = new GetEmail.Result
             {
                 Attempts = new List<GetEmail.Attempt>(),
-                To = email.GetOrDefault("to"),
                 Client = email.GetOrDefault("client"),
                 From = email.GetOrDefault("from"),
                 MessageId = email.GetOrDefault("message-id"),
@@ -92,7 +91,7 @@
 
             var attempts = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
                             join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                            where new[] {"relay", "delay", "delays", "dsn", "status",}.Contains(attr.Key)
+                            where new[] {"relay", "delay", "delays", "dsn", "status", "to"}.Contains(attr.Key)
                             select new
                             {
                                 attr.Host,
@@ -109,6 +108,7 @@
             {
                 var attempt = new GetEmail.Attempt
                 {
+                    To = attemptDictionary.GetOrDefault("to")?.Value,
                     Relay = attemptDictionary.GetOrDefault("relay")?.Value,
                     Delay = attemptDictionary.GetOrDefault("delay")?.Value,
                     Delays = attemptDictionary.GetOrDefault("delays")?.Value,

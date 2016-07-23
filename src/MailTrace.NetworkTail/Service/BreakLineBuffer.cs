@@ -23,21 +23,29 @@
         private void ChangableOnChanged(object sender, ChangedEventArgs changedEventArgs)
         {
             string fullLines;
-            lock (_rock)
+            try
             {
-                var str = _buffer + changedEventArgs.Value;
-                var lastFullLineEnd = str.LastIndexOf(Environment.NewLine, StringComparison.Ordinal);
-
-                if (lastFullLineEnd == -1)
+                lock (_rock)
                 {
-                    _buffer = str;
-                    return;
+                    var str = _buffer + changedEventArgs.Value;
+                    var lastFullLineEnd = str.LastIndexOf(Environment.NewLine, StringComparison.Ordinal);
+
+                    if (lastFullLineEnd == -1)
+                    {
+                        _buffer = str;
+                        return;
+                    }
+
+                    fullLines = str.Substring(0, lastFullLineEnd + Environment.NewLine.Length);
+                    var restOfStr = str.Substring(lastFullLineEnd + Environment.NewLine.Length);
+
+                    _buffer = restOfStr;
                 }
-
-                fullLines = str.Substring(0, lastFullLineEnd + Environment.NewLine.Length);
-                var restOfStr = str.Substring(lastFullLineEnd + Environment.NewLine.Length);
-
-                _buffer = restOfStr;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
 
             OnChanged(new ChangedEventArgs(fullLines));

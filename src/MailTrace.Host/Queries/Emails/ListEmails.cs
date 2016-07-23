@@ -152,18 +152,18 @@
                                               g.Key.FirstSeen,
                                               Group =
                                                   g.ToLookup(x => x.Key).
-                                                    ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value).FirstOrDefault())
+                                                    ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value))
                                           })
                                   .Select(x => new ListEmails.Email
                                   {
                                       MessageId = x.MessageId,
                                       FirstSeen = x.FirstSeen.Value,
-                                      To = x.Group.GetOrDefault("to"),
-                                      DsnCode = x.Group.GetOrDefault("dsn"),
-                                      Delay = x.Group.GetOrDefault("delay"),
-                                      Status = x.Group.GetOrDefault("status"),
-                                      Size = x.Group.GetOrDefault("size"),
-                                      From = x.Group.GetOrDefault("from"),
+                                      To = string.Join(";", (x.Group.GetOrDefault("to") ?? Enumerable.Empty<string>()).Distinct()),
+                                      DsnCode = x.Group.GetOrDefault("dsn")?.FirstOrDefault(),
+                                      Delay = x.Group.GetOrDefault("delay")?.FirstOrDefault(),
+                                      Status = x.Group.GetOrDefault("status")?.FirstOrDefault(),
+                                      Size = x.Group.GetOrDefault("size")?.FirstOrDefault(),
+                                      From = x.Group.GetOrDefault("from")?.FirstOrDefault(),
                                   });
 
             return new ListEmails.Result

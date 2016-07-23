@@ -46,12 +46,12 @@
             result.From.Should().Be("<dmarc-reporter@silvenga.com>");
             result.MessageId.Should().Be("<a1468908015.96715@assp.silvenga.lan>");
             result.Size.Should().Be("2018");
-            result.To.Should().Be("<abuse@froninsa.win>");
 
             result.Attempts.Should().NotBeNull();
 
             result.Attempts.Should().Contain(x => x.Relay == "ducking.froninsa.win[72.9.103.238]:25");
             result.Attempts.Should().Contain(x => x.DsnCode == "4.4.2");
+            result.Attempts.Should().Contain(x => x.To == "<abuse@froninsa.win>");
         }
 
         [Fact]

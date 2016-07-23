@@ -49,6 +49,8 @@
             public string To { get; set; }
 
             public DateTime? SourceTime { get; set; }
+
+            public string OriginallyTo { get; set; }
         }
     }
 
@@ -91,7 +93,7 @@
 
             var attempts = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
                             join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                            where new[] {"relay", "delay", "delays", "dsn", "status", "to"}.Contains(attr.Key)
+                            where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to" }.Contains(attr.Key)
                             select new
                             {
                                 attr.Host,
@@ -110,6 +112,7 @@
                 var attempt = new GetEmail.Attempt
                 {
                     To = attemptDictionary.GetOrDefault("to")?.Value,
+                    OriginallyTo= attemptDictionary.GetOrDefault("orig_to")?.Value,
                     Relay = attemptDictionary.GetOrDefault("relay")?.Value,
                     Delay = attemptDictionary.GetOrDefault("delay")?.Value,
                     Delays = attemptDictionary.GetOrDefault("delays")?.Value,

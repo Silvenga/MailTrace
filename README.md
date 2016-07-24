@@ -10,3 +10,5 @@
 - [X] Preserve log lines when decomposed
 - [ ] Delimitate on first `=` in each attribute tuple
 - [ ] Paging is done before the filter join. Page after join to prevent issues. 
+- [ ] Show org email
+- [ ] Handle emails with `=` in the address

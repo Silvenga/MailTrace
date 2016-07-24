@@ -14,7 +14,6 @@ class TimeAgoFormatValueConverter {
 
 class DurationFormatValueConverter {
     toView(value, metric) {
-        console.log(value);
         return moment.duration(parseInt(value), metric).humanize();
     }
 }

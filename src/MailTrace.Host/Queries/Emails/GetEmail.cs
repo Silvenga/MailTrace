@@ -27,6 +27,8 @@
 
             public string Client { get; set; }
 
+            public string NumberOfRecipients { get; set; }
+
             public IList<Attempt> Attempts { get; set; }
 
             public IList<RecipientStatus> RecipientStatuses { get; set; }
@@ -79,8 +81,8 @@
         public GetEmail.Result Handle(GetEmail.Query message)
         {
             var email = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                         join attr in _context.EmailProperties on new { m.QueueId, m.Host } equals new { attr.QueueId, attr.Host }
-                         where new[] { "message-id", "from", "size", "client" }.Contains(attr.Key)
+                         join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                         where new[] {"message-id", "from", "size", "client", "nrcpt"}.Contains(attr.Key)
                          select new
                          {
                              attr.Key,
@@ -101,11 +103,12 @@
                 From = email.GetOrDefault("from"),
                 MessageId = email.GetOrDefault("message-id"),
                 Size = email.GetOrDefault("size"),
+                NumberOfRecipients = email.GetOrDefault("nrcpt"),
             };
 
             var attempts = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                            join attr in _context.EmailProperties on new { m.QueueId, m.Host } equals new { attr.QueueId, attr.Host }
-                            where new[] { "relay", "delay", "delays", "dsn", "status", "to", "orig_to" }.Contains(attr.Key)
+                            join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                            where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to"}.Contains(attr.Key)
                             select new
                             {
                                 attr.Host,

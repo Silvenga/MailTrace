@@ -62,4 +62,26 @@ export class EmailDetails {
 
         return `panel-${panelClass}`;
     }
+
+    dsnToMessage(dsnCode) {
+        let message = "Unknown";
+
+        if (dsnCode && dsnCode.startsWith("2")) {
+            message = "Success";
+        }
+
+        if (dsnCode && dsnCode.startsWith("5")) {
+            message = "Error";
+        }
+
+        if (dsnCode && dsnCode.startsWith("4")) {
+            message = "Defered";
+        }
+
+        if (!dsnCode) {
+            message = "Not Available";
+        }
+
+        return message;
+    }
 }

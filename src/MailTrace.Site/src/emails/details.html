@@ -32,6 +32,10 @@
                                 <th width="140px">Sending Client</th>
                                 <td>${details.client | default:"Unknown"}</td>
                             </tr>
+                            <tr>
+                                <th width="140px">Recipients</th>
+                                <td>${details.numberOfRecipients | default:"Unknown"}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -43,7 +47,7 @@
                     <div class="col-md-12">
                         <div class="panel ${dsnToClass(recipient.dsnCode)}">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><b>${recipient.dsnCode || "Unknown"}</b> ${recipient.to | emailCleanup}</h3>
+                                <h3 class="panel-title"><b>${dsnToMessage(recipient.dsnCode)}</b> ${recipient.to | emailCleanup}</h3>
                             </div>
                             <div class="panel-body">
                                 <ul class="list-inline">
@@ -52,7 +56,7 @@
                                     <li>Source Time: <b>${recipient.sourceTime | longTimeFormat}</b></li>
                                 </ul>
                                 <div>
-                                    Status Message: <samp>${recipient.status || "Not Available" }</samp>
+                                    Message: <samp class="force-wrap">${recipient.status || "Not Available" }</samp>
                                 </div>
                             </div>
                         </div>
@@ -71,20 +75,18 @@
                             <th>Host</th>
                             <th>Queue Id</th>
                             <th>To</th>
-                            <!--<th>Originally To</th>-->
                             <th>Delay</th>
-                            <!--<th>Delays</th>-->
                             <th>DSN Code</th>
                             <th>Relay</th>
                             <th>Source Time</th>
-                            <!--<th>Status</th>-->
                         </thead>
                         <tbody>
                             <tr repeat.for="attempt of details.attempts">
                                 <td><i class="fa fa-share" aria-hidden="true"></i></td>
                                 <td>${attempt.host}</td>
                                 <td>${attempt.queueId}</td>
-                                <td>${attempt.to | emailCleanup }</td>
+                                <td if.bind="!attempt.originallyTo">${attempt.to | emailCleanup}</td>
+                                <td if.bind="attempt.originallyTo">${attempt.to | emailCleanup} (${attempt.originallyTo | emailCleanup})</td>
                                 <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.delays}">${attempt.delay | durationFormat:"seconds"}</span></td>
                                 <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.status}">${attempt.dsnCode}</span></td>
                                 <td>${attempt.relay}</td>

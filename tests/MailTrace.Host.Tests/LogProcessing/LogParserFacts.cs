@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using FluentAssertions;
 
@@ -14,6 +15,33 @@
     {
         public static IEnumerable<object[]> LogLines => new List<object[]>
         {
+            new object[]
+            {
+                "Jul 24 03:11:35 d0 postfix/smtp[2480]: 3A24217FBE9: to=<m@silvenga.com>, relay=silvenga-com.mail.protection.outlook.com[216.32.180.106]:25, delay=2.7, delays=0.75/0/0.16/1.8, dsn=2.6.0, status=sent (250 2.6.0 <20160724081126.59835.49549.718DED34@appveyor.com> [InternalId=725849473299, Hostname=CY4PR10MB1480.namprd10.prod.outlook.com] 9832 bytes in 0.332, 28.888 KB/sec Queued mail for delivery)",
+                new DateTime(DateTime.Today.Year, 7, 24, 3, 11, 35),
+                "d0",
+                "postfix/smtp",
+                "2480",
+                "3A24217FBE9",
+                "to=<m@silvenga.com>, relay=silvenga-com.mail.protection.outlook.com[216.32.180.106]:25, delay=2.7, delays=0.75/0/0.16/1.8, dsn=2.6.0, status=sent (250 2.6.0 <20160724081126.59835.49549.718DED34@appveyor.com> [InternalId=725849473299, Hostname=CY4PR10MB1480.namprd10.prod.outlook.com] 9832 bytes in 0.332, 28.888 KB/sec Queued mail for delivery)",
+                new[]
+                {
+                    new LineAttribute("status", "sent (250 2.6.0 <20160724081126.59835.49549.718DED34@appveyor.com> [InternalId=725849473299, Hostname=CY4PR10MB1480.namprd10.prod.outlook.com] 9832 bytes in 0.332, 28.888 KB/sec Queued mail for delivery)")
+                }
+            }, new object[]
+            {
+                "Jul 24 03:11:33 d0 postfix/qmgr[13243]: 3A24217FBE9: from=<bounce+c4a080.b34ad-m=silvenga.com@appveyor.com>, size=2937, nrcpt=1 (queue active)",
+                new DateTime(DateTime.Today.Year, 7, 24, 3, 11, 33),
+                "d0",
+                "postfix/qmgr",
+                "13243",
+                "3A24217FBE9",
+                "from=<bounce+c4a080.b34ad-m=silvenga.com@appveyor.com>, size=2937, nrcpt=1 (queue active)",
+                new[]
+                {
+                    new LineAttribute("from", "<bounce+c4a080.b34ad-m=silvenga.com@appveyor.com>")
+                }
+            },
             new object[]
             {
                 "Jul 22 23:37:33 d0 postfix/smtp[22416]: 6A57017F4EF: to=<test@mxmirror.net>, relay=mxmirror.net[195.154.231.137]:25, delay=2.3, delays=0.86/0.01/1.1/0.35, dsn=2.0.0, status=sent (250 2.0.0 Ok: queued as 2F9C05EFE)",
@@ -124,7 +152,10 @@
             result.Service.Pid.Should().Be(servicePid);
             result.QueueId.Should().Be(queueId);
             result.Message.Should().Be(message);
-            result.Attributes.Should().BeEquivalentTo(attributes);
+            if (attributes.Any())
+            {
+                result.Attributes.Should().Contain(attributes);
+            }
         }
     }
 }

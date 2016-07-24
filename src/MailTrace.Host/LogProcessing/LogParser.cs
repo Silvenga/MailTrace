@@ -57,10 +57,17 @@
 
         private IEnumerable<LineAttribute> ParseTuples(string message)
         {
-            var tuples = message.Split(',').Select(x => x.Split('='));
+            var parts = message.Split(new[] { ", status=" }, StringSplitOptions.RemoveEmptyEntries);
+
+            var tuples = parts[0].Split(new []{", "}, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Split(new[] { '=' }, 2));
             foreach (var tuple in tuples.Where(x => x.Length == 2))
             {
                 yield return new LineAttribute(tuple.First().Trim(), tuple.Last().Trim());
+            }
+
+            if (parts.Length == 2)
+            {
+                yield return new LineAttribute("status", parts[1]);
             }
         }
     }

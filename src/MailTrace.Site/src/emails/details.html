@@ -76,6 +76,7 @@
                             <!--<th>Delays</th>-->
                             <th>DSN Code</th>
                             <th>Relay</th>
+                            <th>Source Time</th>
                             <!--<th>Status</th>-->
                         </thead>
                         <tbody>
@@ -87,6 +88,7 @@
                                 <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.delays}">${attempt.delay | durationFormat:"seconds"}</span></td>
                                 <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.status}">${attempt.dsnCode}</span></td>
                                 <td>${attempt.relay}</td>
+                                <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.sourceTime | longTimeFormat}">${attempt.sourceTime | timeAgoFormat}</span></td>
                             </tr>
                         </tbody>
                     </table>

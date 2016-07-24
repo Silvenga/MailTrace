@@ -12,7 +12,7 @@
     <section if.bind="details">
         <div class="row">
             <div class="col-md-6">
-                <h3><i class="fa fa-envelope-o" aria-hidden="true"></i> Email Message</h3>
+                <h3><i class="fa fa-envelope-o" aria-hidden="true"></i> Email Message <small>Details about the message</small></h3>
                 <div class="panel panel-default">
                     <table class="table" style="table-layout: fixed">
                         <tbody>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="col-md-6">
-                <h3><i class="fa fa-inbox" aria-hidden="true"></i> Delivery Statuses</h3>
+                <h3><i class="fa fa-inbox" aria-hidden="true"></i> Delivery Statuses <small>Status of deilvery for each recipient</small></h3>
                 <div class="row" repeat.for="recipient of details.recipientStatuses">
                     <div class="col-md-12">
                         <div class="panel ${dsnToClass(recipient.dsnCode)}">
@@ -67,7 +67,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h3><i class="fa fa-sign-in" aria-hidden="true"></i> Delivery Attempts</h3>
+                <h3><i class="fa fa-sign-in" aria-hidden="true"></i> Delivery Attempts <small>History of attempts across all recipients</small></h3>
                 <div class="panel panel-default">
                     <table class="table">
                         <thead>

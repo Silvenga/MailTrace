@@ -148,6 +148,7 @@
     <Compile Include="Queries\Logs\ImportLogs.cs" />
     <Compile Include="Queries\Emails\ListEmails.cs" />
     <Compile Include="Queries\Logs\ListLogs.cs" />
+    <Compile Include="Queries\Reports\DeliveryAttemptsReport.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

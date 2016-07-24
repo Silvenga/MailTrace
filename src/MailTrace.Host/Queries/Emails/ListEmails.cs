@@ -76,7 +76,7 @@
             var toPredicate = PredicateBuilder.True<EmailProperty>();
             if (message.To != null)
             {
-                toPredicate = toPredicate.And(x => x.Key == "to" && x.Value.Contains(message.To));
+                toPredicate = toPredicate.And(x => (x.Key == "to" && x.Value.Contains(message.To)) || (x.Key == "orig_to" && x.Value.Contains(message.To)));
             }
             var fromPredicate = PredicateBuilder.True<EmailProperty>();
             if (message.From != null)
@@ -111,7 +111,7 @@
                 .Where(sourcePredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
-            
+
             var baseQuery = (from m in _context
                 .EmailProperties
                 .AsExpandable().Where(x => x.Key == "message-id")

@@ -32,7 +32,11 @@
 
         public class Result
         {
-            public IList<Email> Logs { get; set; }
+            public IList<Email> Emails { get; set; }
+
+            public int CurrentPage { get; set; }
+
+            public int CurrentPageSize { get; set; }
         }
 
         public class Email
@@ -88,7 +92,7 @@
             {
                 sourcePredicate = sourcePredicate.And(x => x.Key == "message-id" && x.SourceTime >= message.After);
             }
-
+            
             var baseQuery = _context
                 .EmailProperties
                 .AsExpandable()
@@ -168,7 +172,9 @@
 
             return new ListEmails.Result
             {
-                Logs = projection.ToList()
+                Emails = projection.ToList(),
+                CurrentPage = page,
+                CurrentPageSize = takeSize
             };
         }
     }

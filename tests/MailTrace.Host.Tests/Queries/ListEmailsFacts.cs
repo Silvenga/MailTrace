@@ -38,9 +38,9 @@
             var result = handler.Handle(query);
 
             // Assert
-            result.Logs.Should().HaveCount(1);
+            result.Emails.Should().HaveCount(1);
 
-            var email = result.Logs.First();
+            var email = result.Emails.First();
             email.From.Should().Be("<dmarc-reporter@silvenga.com>");
             email.FirstSeen.Should().Be(new DateTime(2016, 7, 19, 1, 5, 21)); // 
             email.MessageId.Should().Be("<a1468908015.96715@assp.silvenga.lan>");
@@ -66,9 +66,9 @@
             var result = handler.Handle(query);
 
             // Assert
-            result.Logs.Should().HaveCount(1);
+            result.Emails.Should().HaveCount(1);
 
-            var email = result.Logs.First();
+            var email = result.Emails.First();
             email.From.Should().Be("<m@silvenga.com>");
             email.FirstSeen.Should().Be(new DateTime(2016, 7, 23, 16, 01, 00)); // 
             email.MessageId.Should().Be("<sig.501269a179.MWHPR10MB1485930B3BAD1143C8684A43D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
@@ -97,9 +97,9 @@
             var result = handler.Handle(query);
 
             // Assert
-            result.Logs.Should().HaveCount(1);
+            result.Emails.Should().HaveCount(1);
 
-            var email = result.Logs.First();
+            var email = result.Emails.First();
             email.From.Should().Be("<m@silvenga.com>");
             email.FirstSeen.Should().Be(new DateTime(2016, 7, 23, 16, 01, 00)); // 
             email.MessageId.Should().Be("<sig.501269a179.MWHPR10MB1485930B3BAD1143C8684A43D50B0@MWHPR10MB1485.namprd10.prod.outlook.com>");
@@ -128,7 +128,7 @@
             var result = handler.Handle(query);
 
             // Assert
-            result.Logs.Should().HaveCount(0);
+            result.Emails.Should().HaveCount(0);
         }
     }
 }

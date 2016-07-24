@@ -16,6 +16,8 @@ export class EmailDetails {
             return;
         }
 
+        this.params = params;
+
         await fetch;
         this.http = this.getHttpClient();
 
@@ -25,7 +27,12 @@ export class EmailDetails {
                 .withBaseUrl('/api/');
         });
 
-        this.details = await this.fetchEmailDetails(params.messageId);
+        await this.refresh();
+    }
+
+    async refresh() {
+        this.details = null;
+        this.details = await this.fetchEmailDetails(this.params.messageId);
     }
 
     async fetchEmailDetails(messageId) {

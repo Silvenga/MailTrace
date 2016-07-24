@@ -1,4 +1,4 @@
-![icon](/docs/images/icon.png)
+![icon](docs/images/icon.png)
 
 # MailTrace
 
@@ -8,7 +8,13 @@
 
 - [ ] Handle dup logs
 - [X] Preserve log lines when decomposed
-- [ ] Delimitate on first `=` in each attribute tuple
-- [ ] Paging is done before the filter join. Page after join to prevent issues. 
-- [ ] Show org email
-- [ ] Handle emails with `=` in the address
+- [X] Delimitate on first `=` in each attribute tuple
+- [X] Paging is done before the filter join. Page after join to prevent issues. 
+- [X] Show org email
+- [X] Handle emails with `=` in the address
+- [ ] API should host UI
+- [ ] Add UI to build process
+
+## Screenshots
+
+![mail details](docs/images/mailtrace-email-details.png)

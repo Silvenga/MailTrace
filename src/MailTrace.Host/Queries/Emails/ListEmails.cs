@@ -96,6 +96,11 @@
                 .OrderByDescending(x => x.SourceTime)
                 .Skip(skipSize)
                 .Take(takeSize);
+            var filterPropertyQuery = _context
+                .EmailProperties
+                .AsExpandable()
+                .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
+
             var filterToQuery = _context
                 .EmailProperties
                 .AsExpandable()
@@ -114,32 +119,30 @@
                 .Where(sourcePredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
-            var filterPropertyQuery = _context
-                .EmailProperties
-                .AsExpandable()
-                .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
 
-            var query = from m in baseQuery
-                        join attr in
-                            filterPropertyQuery on new {m.QueueId, m.Host}
-                            equals new {attr.QueueId, attr.Host}
-                        join filterTo in
-                            filterToQuery on new {m.QueueId, m.Host}
-                            equals new {filterTo.QueueId, filterTo.Host}
-                        join filterFrom in
-                            filterFromQuery on new {m.QueueId, m.Host}
-                            equals new {filterFrom.QueueId, filterFrom.Host}
-                        join filterSourceTime in
-                            filterSourceTimeQuery on new {m.QueueId, m.Host}
-                            equals new {filterSourceTime.QueueId, filterSourceTime.Host}
-                        select new
-                        {
-                            MessageId = m.Value,
-                            FirstSeen = m.SourceTime,
-                            attr.Key,
-                            attr.Value,
-                            attr.SourceTime
-                        };
+            var query = (from m in baseQuery
+                         join attr in
+                             filterPropertyQuery on new {m.QueueId, m.Host}
+                             equals new {attr.QueueId, attr.Host}
+                         join filterTo in
+                             filterToQuery on new {m.QueueId, m.Host}
+                             equals new {filterTo.QueueId, filterTo.Host}
+                         join filterFrom in
+                             filterFromQuery on new {m.QueueId, m.Host}
+                             equals new {filterFrom.QueueId, filterFrom.Host}
+                         join filterSourceTime in
+                             filterSourceTimeQuery on new {m.QueueId, m.Host}
+                             equals new {filterSourceTime.QueueId, filterSourceTime.Host}
+                         orderby m.SourceTime descending
+                         select new
+                         {
+                             MessageId = m.Value,
+                             FirstSeen = m.SourceTime,
+                             attr.Key,
+                             attr.Value,
+                             attr.SourceTime
+                         })
+                .ToList();
 
             var projection = query.AsEnumerable()
                                   .GroupBy(x => new {x.MessageId, x.FirstSeen})

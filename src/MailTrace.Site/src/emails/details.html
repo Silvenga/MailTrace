@@ -1,0 +1,90 @@
+<template>
+    <require from="converters/unit-formating"></require>
+    <require from="converters/string-formating"></require>
+    <require from="converters/time-formating"></require>
+    <require from="attributes/bootstrap-tooltip"></require>
+    <h2 class="sub-header">Email Details</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <h3><i class="fa fa-envelope-o" aria-hidden="true"></i> Email Message</h3>
+            <div class="panel panel-default">
+                <table class="table" style="table-layout: fixed">
+                    <tbody>
+                        <tr>
+                            <th width="140px">From</th>
+                            <td><a href="mailto:${details.from}">${details.from | emailCleanup | default:"Unknown" }</a></td>
+                        </tr>
+                        <tr>
+                            <th width="140px">Message Id</th>
+                            <td class="force-wrap">${details.messageId}</td>
+                        </tr>
+                        <tr>
+                            <th width="140px">Message Size</th>
+                            <td>${details.size | humanBytes}</td>
+                        </tr>
+                        <tr>
+                            <th width="140px">Sending Client</th>
+                            <td>${details.client | default:"Unknown"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h3><i class="fa fa-inbox" aria-hidden="true"></i> Delivery Statuses</h3>
+            <div class="row" repeat.for="recipient of details.recipientStatuses">
+                <div class="col-md-12">
+                    <div class="panel ${dsnToClass(recipient.dsnCode)}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><b>${recipient.dsnCode || "Unknown"}</b> ${recipient.to | emailCleanup}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-inline">
+                                <li>To: <b><a href="mailto:${recipient.to}">${recipient.to | emailCleanup}</a></b></li>
+                                <li>DSN: <b>${recipient.dsnCode || "Unknown"}</b></li>
+                                <li>Source Time: <b>${recipient.sourceTime | longTimeFormat}</b></li>
+                            </ul>
+                            <div>
+                                Status Message: <samp>${recipient.status || "Not Available" }</samp>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3><i class="fa fa-sign-in" aria-hidden="true"></i> Delivery Attempts</h3>
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                        <th></th>
+                        <th>Host</th>
+                        <th>Queue Id</th>
+                        <th>To</th>
+                        <!--<th>Originally To</th>-->
+                        <th>Delay</th>
+                        <!--<th>Delays</th>-->
+                        <th>DSN Code</th>
+                        <th>Relay</th>
+                        <!--<th>Status</th>-->
+                    </thead>
+                    <tbody>
+                        <tr repeat.for="attempt of details.attempts">
+                            <td><i class="fa fa-share" aria-hidden="true"></i></td>
+                            <td>${attempt.host}</td>
+                            <td>${attempt.queueId}</td>
+                            <td>${attempt.to | emailCleanup }</td>
+                            <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.delays}">${attempt.delay} seconds</span></td>
+                            <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${attempt.status}">${attempt.dsnCode}</span></td>
+                            <td>${attempt.relay}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>

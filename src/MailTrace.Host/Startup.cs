@@ -9,6 +9,8 @@
 
     using MailTrace.Host.Ninject;
 
+    using Newtonsoft.Json.Serialization;
+
     using NLog;
     using NLog.Config;
     using NLog.Targets;
@@ -44,6 +46,9 @@
             {
                 IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always
             };
+
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             config.MapHttpAttributeRoutes();
 
             app.UseNinjectWebApi(config);

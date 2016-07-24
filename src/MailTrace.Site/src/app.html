@@ -1,0 +1,15 @@
+<template>
+  <require from="bootstrap/dist/css/bootstrap.css"></require>
+  <require from="../styles/styles.css"></require>
+  <require from="./partials/header.html"></require>
+  <require from="./partials/menu.html"></require>
+  <header router.bind="router"></header>
+  <div class="container-fluid">
+    <div class="row">
+      <menu router.bind="router"></menu>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
+</template>

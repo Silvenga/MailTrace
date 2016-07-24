@@ -1,0 +1,28 @@
+<template>
+  <require from="converters/time-formating"></require>
+  <require from="converters/string-formating"></require>
+  <require from="attributes/bootstrap-tooltip"></require>
+  <h2 class="sub-header">Emails</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>To</th>
+          <th>From</th>
+          <th>First Seen</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="email of emails">
+          <td><i class="fa fa-envelope-o" aria-hidden="true"></i></td>
+          <td>${email.to | default:"Unknown" }</td>
+          <td>${email.from | emailCleanup | default:"Unknown" }</td>
+          <td><span bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="${email.firstSeen | longTimeFormat }">${email.firstSeen | timeAgoFormat}</span></td>
+          <td><a route-href="route: email-details; params.bind: { messageId: email.messageId }">Details</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>

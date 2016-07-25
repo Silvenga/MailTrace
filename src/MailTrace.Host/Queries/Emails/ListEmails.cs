@@ -34,9 +34,11 @@
         {
             public IList<Email> Emails { get; set; }
 
-            public int CurrentPage { get; set; }
+            public int Page { get; set; }
 
-            public int CurrentPageSize { get; set; }
+            public int PageSize { get; set; }
+
+            public int Count { get; set; }
         }
 
         public class Email
@@ -112,19 +114,23 @@
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
 
-            var baseQuery = (from m in _context
+            var baseQuery = from m in _context
                 .EmailProperties
                 .AsExpandable().Where(x => x.Key == "message-id")
-                             join filterTo in
-                                 filterToQuery on new {m.QueueId, m.Host}
-                                 equals new {filterTo.QueueId, filterTo.Host}
-                             join filterFrom in
-                                 filterFromQuery on new {m.QueueId, m.Host}
-                                 equals new {filterFrom.QueueId, filterFrom.Host}
-                             join filterSourceTime in
-                                 filterSourceTimeQuery on new {m.QueueId, m.Host}
-                                 equals new {filterSourceTime.QueueId, filterSourceTime.Host}
-                             select m)
+                            join filterTo in
+                                filterToQuery on new {m.QueueId, m.Host}
+                                equals new {filterTo.QueueId, filterTo.Host}
+                            join filterFrom in
+                                filterFromQuery on new {m.QueueId, m.Host}
+                                equals new {filterFrom.QueueId, filterFrom.Host}
+                            join filterSourceTime in
+                                filterSourceTimeQuery on new {m.QueueId, m.Host}
+                                equals new {filterSourceTime.QueueId, filterSourceTime.Host}
+                            select m;
+
+            var count = baseQuery.Count();
+
+            var pagedQuery = baseQuery
                 .OrderByDescending(x => x.SourceTime)
                 .Skip(skipSize)
                 .Take(takeSize);
@@ -134,7 +140,7 @@
                 .AsExpandable()
                 .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
 
-            var query = (from m in baseQuery
+            var query = (from m in pagedQuery
                          join attr in
                              filterPropertyQuery on new {m.QueueId, m.Host}
                              equals new {attr.QueueId, attr.Host}
@@ -174,8 +180,9 @@
             return new ListEmails.Result
             {
                 Emails = projection.ToList(),
-                CurrentPage = page,
-                CurrentPageSize = takeSize
+                Page = page,
+                PageSize = takeSize,
+                Count = count
             };
         }
     }

@@ -80,7 +80,7 @@
 
         public GetEmail.Result Handle(GetEmail.Query message)
         {
-            var email = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
+            var emailAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
                          join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
                          where new[] {"message-id", "from", "size", "client", "nrcpt"}.Contains(attr.Key)
                          select new
@@ -92,21 +92,21 @@
                 .ToLookup(x => x.Key)
                 .ToDictionary(x => x.Key, x => x.First().Value);
 
-            if (email.Count == 0)
+            if (!emailAttributes.Any())
             {
                 return null;
             }
 
             var result = new GetEmail.Result
             {
-                Client = email.GetOrDefault("client"),
-                From = email.GetOrDefault("from"),
-                MessageId = email.GetOrDefault("message-id"),
-                Size = email.GetOrDefault("size"),
-                NumberOfRecipients = email.GetOrDefault("nrcpt"),
+                Client = emailAttributes.GetOrDefault("client"),
+                From = emailAttributes.GetOrDefault("from"),
+                MessageId = emailAttributes.GetOrDefault("message-id"),
+                Size = emailAttributes.GetOrDefault("size"),
+                NumberOfRecipients = emailAttributes.GetOrDefault("nrcpt"),
             };
 
-            var attempts = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
+            var attemptAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
                             join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
                             where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to"}.Contains(attr.Key)
                             select new
@@ -137,9 +137,9 @@
                 .OrderByDescending(x => x.SourceTime)
                 .ToList();
 
-            result.Attempts = attempts;
+            result.Attempts = attemptAttributes;
 
-            result.RecipientStatuses = (from attempt in attempts
+            result.RecipientStatuses = (from attempt in attemptAttributes
                                         group attempt by attempt.To
                                         into g
                                         let lastAttempt = g.OrderByDescending(x => x.SourceTime).FirstOrDefault()

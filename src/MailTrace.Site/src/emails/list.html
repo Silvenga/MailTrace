@@ -2,11 +2,11 @@
   <require from="converters/time-formating"></require>
   <require from="converters/string-formating"></require>
   <require from="attributes/bootstrap-tooltip"></require>
-  <h2 class="sub-header">Emails
+  <h2 class="sub-header">Emails <small if.bind="pagination">Page ${pagination.page} of ${pagination.pages}. ${pagination.count} items total.</small>
     <button class="btn btn-default pull-right" click.delegate="refresh()"><i class="fa fa-refresh" aria-hidden="true" ></i> Refresh</button>
   </h2>
 
-  <form class="form-inline" submit.delegate="refresh()">
+  <form class="form-inline" submit.delegate="search()">
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon">To</div>
@@ -48,7 +48,7 @@
       </tbody>
     </table>
 
-    <button click.delegate="nextPage()" class="btn btn-default btn-block">Viewing ${emails.length}. Load ${pageSize} more.</button>
+    <!--<button click.delegate="nextPage()" class="btn btn-default btn-block">Viewing ${emails.length}. Load ${pageSize} more.</button>-->
 
   </div>
 </template>

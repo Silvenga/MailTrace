@@ -137,6 +137,7 @@
   <ItemGroup>
     <Compile Include="Controllers\EmailsController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Models\EmailStatus.cs" />
     <Compile Include="Models\Logs\LineAttribute.cs" />
     <Compile Include="Models\Logs\LogLine.cs" />
     <Compile Include="LogProcessing\LogParser.cs" />

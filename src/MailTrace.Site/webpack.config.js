@@ -13,11 +13,11 @@ const ENV = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() || 'devel
 let config;
 
 // basic configuration:
-const title = 'Aurelia Navigation Skeleton';
+const title = 'MailTrace';
 const baseUrl = '/';
 const rootDir = path.resolve();
 const srcDir = path.resolve('src');
-const outDir = path.resolve('dist');
+const outDir = path.resolve('bin');
 
 const coreBundles = {
     bootstrap: [

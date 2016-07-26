@@ -1,0 +1,25 @@
+version: 1.0.{build}
+init:
+- ps: Install-Product node 6.2.0
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+cache:
+- src\MailTrace.Site\node_modules
+- packages
+build_script:
+- cmd: >-
+    nuget restore
+
+    msbuild "MailTrace.sln" /m /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+    cd src\MailTrace.Site
+
+    npm version
+
+    npm install
+
+    npm run prod

@@ -9,6 +9,9 @@
 
     using MailTrace.Host.Ninject;
 
+    using Microsoft.Owin.FileSystems;
+    using Microsoft.Owin.StaticFiles;
+
     using Newtonsoft.Json.Serialization;
 
     using NLog;
@@ -27,6 +30,7 @@
 
             ConfigureNinject(app);
             ConfigureWebApi(app);
+            ConfigureStaticHosting(app);
         }
 
         private IKernel ConfigureNinject(IAppBuilder app)
@@ -52,6 +56,20 @@
             config.MapHttpAttributeRoutes();
 
             app.UseNinjectWebApi(config);
+        }
+
+        private static void ConfigureStaticHosting(IAppBuilder app)
+        {
+            var physicalFileSystem = new PhysicalFileSystem("Content");
+            var options = new FileServerOptions
+            {
+                EnableDefaultFiles = true,
+                FileSystem = physicalFileSystem,
+                EnableDirectoryBrowsing = true
+            };
+            options.StaticFileOptions.FileSystem = physicalFileSystem;
+            options.StaticFileOptions.ServeUnknownFileTypes = true;
+            app.UseFileServer(options);
         }
 
         private static void ConfigureLogging()

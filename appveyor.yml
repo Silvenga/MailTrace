@@ -7,19 +7,25 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+environment:
+  OCTOPUS_API:
+    secure: +DI+SrzWnbiUUsjEBQKINbCOauwT8+Xm3t0zeIqExlg=
 cache:
 - src\MailTrace.Site\node_modules
 - packages
 build_script:
-- cmd: >-
-    nuget restore
+- cmd: "nuget restore\nmsbuild \"MailTrace.sln\" /p:RunOctoPack=true /m /verbosity:minimal /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\" \n\ncd src\\MailTrace.Site\n\nnpm version\nnpm install\nnpm run prod"
+deploy_script:
+- ps: >-
+    $url = 'https://download.octopusdeploy.com/octopus-tools/3.3.18/OctopusTools.3.3.18.zip'
 
-    msbuild "MailTrace.sln" /m /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+    $out = 'OctopusTools.zip'
 
-    cd src\MailTrace.Site
 
-    npm version
+    (New-Object System.Net.WebClient).DownloadFile($url, $out)
 
-    npm install
 
-    npm run prod
+    Expand-Archive $out -DestinationPath .\
+
+
+    where .\Octo.exe

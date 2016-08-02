@@ -1,0 +1,8 @@
+logstash:
+  image: logstash 
+  ports:
+    - "5043:5043"
+  volumes: 
+    - ./logstash.conf:/logstash.conf
+    - ./mail-snip.log:/mail-snip.log
+  command: logstash -f /logstash.conf

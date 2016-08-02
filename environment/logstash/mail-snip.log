@@ -1,0 +1,44 @@
+Jul 10 20:31:31 d0 postfix/smtpd[16283]: EF59F17F531: client=localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: connect from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: connect from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/smtpd[13724]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:32 d0 postfix/cleanup[16286]: EF59F17F531: message-id=<sig.200092563b.SN1PR10MB06400081E699D2524DDED785D53F0@SN1PR10MB0640.namprd10.prod.outlook.com>
+Jul 10 20:31:32 d0 opendkim[1708]: EF59F17F531: DKIM-Signature field added (s=2048_3_2015, d=silvenga.com)
+Jul 10 20:31:32 d0 postfix/qmgr[13243]: EF59F17F531: from=<m@silvenga.com>, size=4213, nrcpt=1 (queue active)
+Jul 10 20:31:32 d0 postfix/smtpd[16283]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:34 d0 postfix/smtp[16287]: EF59F17F531: to=<check-auth@verifier.port25.com>, relay=verifier.port25.com[38.95.155.1]:25, delay=2.5, delays=1.1/0/0.71/0.68, dsn=2.6.0, status=sent (250 2.6.0 message received)
+Jul 10 20:31:34 d0 postfix/qmgr[13243]: EF59F17F531: removed
+Jul 10 20:31:38 d0 postfix/smtpd[13724]: 5988017F531: client=localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: connect from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/cleanup[16286]: 5988017F531: message-id=<1468200694-490401@verifier.port25.com>
+Jul 10 20:31:38 d0 opendkim[1708]: 5988017F531: no signing table match for 'auth-results@verifier.port25.com'
+Jul 10 20:31:38 d0 postfix/qmgr[13243]: 5988017F531: from=<auth-results@verifier.port25.com>, size=18436, nrcpt=1 (queue active)
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: connect from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[16283]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:38 d0 postfix/smtpd[13724]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:40 d0 postfix/smtpd[16283]: connect from localhost[127.0.0.1]
+Jul 10 20:31:40 d0 postfix/smtpd[16283]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:31:40 d0 postfix/smtpd[16283]: disconnect from localhost[127.0.0.1]
+Jul 10 20:31:41 d0 postfix/smtp[16287]: 5988017F531: to=<m@silvenga.com>, relay=silvenga-com.mail.protection.outlook.com[207.16.153.200]:25, delay=3.5, delays=0.61/0/1.1/1.8, dsn=2.6.0, status=sent (250 2.6.0 <1468200694-490401@verifier.port25.com> [InternalId=49589692400951, Hostname=BY2PR10MB0629.namprd10.prod.outlook.com] 25588 bytes in 0.245, 101.969 KB/sec Queued mail for delivery)
+Jul 10 20:31:41 d0 postfix/qmgr[13243]: 5988017F531: removed
+Jul 10 20:46:22 d0 postfix/smtpd[31587]: 29EA217F4FB: client=localhost[127.0.0.1]
+Jul 10 20:46:22 d0 postfix/cleanup[29112]: 29EA217F4FB: message-id=<sig.6000939f09.SN1PR10MB064060CDA6E2775DAD19DC1DD53F0@SN1PR10MB0640.namprd10.prod.outlook.com>
+Jul 10 20:46:22 d0 opendkim[1708]: 29EA217F4FB: DKIM-Signature field added (s=2048_3_2015, d=silvenga.com)
+Jul 10 20:46:22 d0 postfix/qmgr[13243]: 29EA217F4FB: from=<m@silvenga.com>, size=3892, nrcpt=1 (queue active)
+Jul 10 20:46:22 d0 postfix/smtp[29116]: 29EA217F4FB: to=<test@example.not.exists>, relay=none, delay=0.6, delays=0.56/0/0.03/0, dsn=5.4.4, status=bounced (Host or domain name not found. Name service error for name=example.not.exists type=AAAA: Host not found)
+Jul 10 20:46:22 d0 postfix/cleanup[29112]: AA46D17F62D: message-id=<20160711014622.AA46D17F62D@egress.silvenga.com>
+Jul 10 20:46:22 d0 postfix/smtpd[31587]: disconnect from localhost[127.0.0.1]
+Jul 10 20:46:22 d0 postfix/bounce[31634]: 29EA217F4FB: sender non-delivery notification: AA46D17F62D
+Jul 10 20:46:22 d0 postfix/qmgr[13243]: AA46D17F62D: from=<>, size=6014, nrcpt=1 (queue active)
+Jul 10 20:46:22 d0 postfix/qmgr[13243]: 29EA217F4FB: removed
+Jul 10 20:46:23 d0 postfix/smtpd[31587]: connect from localhost[127.0.0.1]
+Jul 10 20:46:23 d0 postfix/smtpd[31587]: lost connection after CONNECT from localhost[127.0.0.1]
+Jul 10 20:46:23 d0 postfix/smtpd[31587]: disconnect from localhost[127.0.0.1]
+Jul 10 20:46:24 d0 postfix/smtp[29116]: AA46D17F62D: to=<m@silvenga.com>, relay=silvenga-com.mail.protection.outlook.com[207.16.153.200]:25, delay=2.1, delays=0.03/0/0.59/1.5, dsn=2.6.0, status=sent (250 2.6.0 <20160711014622.AA46D17F62D@egress.silvenga.com> [InternalId=50418621090171, Hostname=CY1PR10MB0634.namprd10.prod.outlook.com] 11666 bytes in 0.296, 38.398 KB/sec Queued mail for delivery)
+Jul 10 20:46:24 d0 postfix/qmgr[13243]: AA46D17F62D: removed

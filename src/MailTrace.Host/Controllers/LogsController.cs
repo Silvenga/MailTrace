@@ -1,5 +1,6 @@
 ﻿namespace MailTrace.Host.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Web.Http;
 
@@ -27,5 +28,22 @@
             var result = await _mediator.SendAsync(command);
             return Ok(result);
         }
+
+        [Route("import/logstash"), HttpPost]
+        public async Task<IHttpActionResult> ImportLogstashAsync([FromBody] LogstashMessage message)
+        {
+            var command = new ImportLogs.Command
+            {
+                LogLines = new List<string> {message.Message}
+            };
+
+            var result = await _mediator.SendAsync(command);
+            return Ok(result);
+        }
+    }
+
+    public class LogstashMessage
+    {
+        public string Message { get; set; }
     }
 }

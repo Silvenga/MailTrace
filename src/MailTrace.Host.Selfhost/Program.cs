@@ -12,7 +12,7 @@
     {
         private static void Main(string[] args)
         {
-            var baseAddress = args.FirstOrDefault() ?? "http://localhost:9900";
+            var baseAddress = args.FirstOrDefault() ?? "http://10.0.75.1:9901";
 
             Startup.PostConfigureKernel += kernel => { kernel.Bind<TraceContext>().To<PostgresqlTraceContext>(); };
 

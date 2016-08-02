@@ -22,7 +22,7 @@
             _mediator = mediator;
         }
 
-        [Route("import"), HttpPost]
+        [Route("import/networktail"), HttpPost]
         public async Task<IHttpActionResult> ImportAsync([FromBody] ImportLogs.Command command)
         {
             var result = await _mediator.SendAsync(command);

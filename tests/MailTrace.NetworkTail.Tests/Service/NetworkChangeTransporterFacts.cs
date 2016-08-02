@@ -66,7 +66,7 @@ namespace MailTrace.NetworkTail.Tests.Service
 
             // Assert
             mockClient.Received().
-                       PostAsJsonAsync(Arg.Is("/api/logs/import"), Arg.Do<NetworkLogLinesCommand>(x => { x.LogLines.ShouldBeEquivalentTo(expected.LogLines); }));
+                       PostAsJsonAsync(Arg.Is("/api/logs/import/networktail"), Arg.Do<NetworkLogLinesCommand>(x => { x.LogLines.ShouldBeEquivalentTo(expected.LogLines); }));
         }
     }
 }

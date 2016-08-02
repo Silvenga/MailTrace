@@ -38,7 +38,7 @@
                     LogLines = lines
                 };
 
-                var result = _client.PostAsJsonAsync("/api/logs/import", command).Result;
+                var result = _client.PostAsJsonAsync("/api/logs/import/networktail", command).Result;
                 Logger.Info(result.StatusCode);
                 result.EnsureSuccessStatusCode();
             }

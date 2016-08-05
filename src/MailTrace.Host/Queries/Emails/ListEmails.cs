@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using AutoMapper.Configuration;
+
+    using JetBrains.Annotations;
 
     using LinqKit;
 
@@ -15,7 +19,7 @@
 
     public class ListEmails
     {
-        public class Query : IRequest<Result>
+        public class Query : IAsyncRequest<Result>
         {
             public DateTime? Before { get; set; }
 
@@ -57,7 +61,7 @@
         }
     }
 
-    public class ListEmailsHandler : IRequestHandler<ListEmails.Query, ListEmails.Result>
+    public class ListEmailsHandler : IAsyncRequestHandler<ListEmails.Query, ListEmails.Result>
     {
         private readonly TraceContext _context;
 
@@ -66,7 +70,7 @@
             _context = context;
         }
 
-        public ListEmails.Result Handle(ListEmails.Query message)
+        public async Task<ListEmails.Result> Handle(ListEmails.Query message)
         {
             // TODO
             // [ ] Reduce complexity of this query, R# is sad.
@@ -75,10 +79,83 @@
             var takeSize = message.PageSize ?? 50;
             var skipSize = takeSize * (page - 1);
 
+            var baseQuery = BaseQueryAndFilter(message);
+            var countTask = baseQuery.CountAsync();
+
+            var pagedQuery = baseQuery
+                .OrderByDescending(x => x.SourceTime)
+                .Skip(skipSize)
+                .Take(takeSize);
+
+            var filterPropertyQuery = _context
+                .EmailProperties
+                .AsExpandable()
+                .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
+
+            var query = await (from m in pagedQuery
+                               join attr in
+                                   filterPropertyQuery on new {m.QueueId, m.Host}
+                                   equals new {attr.QueueId, attr.Host}
+                               orderby m.SourceTime descending
+                               select new Params
+                               {
+                                   MessageId = m.Value,
+                                   FirstSeen = m.SourceTime,
+                                   Key = attr.Key,
+                                   Value = attr.Value,
+                                   SourceTime = attr.SourceTime
+                               })
+                .ToListAsync();
+
+            var projection = Projection(query).ToList();
+
+            return new ListEmails.Result
+            {
+                Emails = projection,
+                Page = page,
+                PageSize = takeSize,
+                Count = await countTask
+            };
+        }
+
+        private IEnumerable<ListEmails.Email> Projection(List<Params> query)
+        {
+            return query
+                .GroupBy(x => new {x.MessageId, x.FirstSeen})
+                .Select(
+                    g =>
+                        new
+                        {
+                            g.Key.MessageId,
+                            g.Key.FirstSeen,
+                            Group =
+                                g.ToLookup(x => x.Key)
+                                 .ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value))
+                        })
+                .Select(x => new ListEmails.Email
+                {
+                    MessageId = x.MessageId,
+                    FirstSeen = x.FirstSeen.Value,
+                    To = ConcatRecipientList(x.Group.GetOrDefault("to")),
+                    Size = x.Group.GetOrDefault("size")?.FirstOrDefault(),
+                    From = x.Group.GetOrDefault("from")?.FirstOrDefault(),
+                    NumberOfRecipients = x.Group.GetOrDefault("nrcpt")?.FirstOrDefault(),
+                });
+        }
+
+        private string ConcatRecipientList([CanBeNull] IEnumerable<string> enumerable)
+        {
+            var list = enumerable ?? Enumerable.Empty<string>();
+            return string.Join(";", list.Distinct());
+        }
+
+        private IQueryable<EmailProperty> BaseQueryAndFilter(ListEmails.Query message)
+        {
             var toPredicate = PredicateBuilder.True<EmailProperty>();
             if (message.To != null)
             {
-                toPredicate = toPredicate.And(x => (x.Key == "to" && x.Value.Contains(message.To)) || (x.Key == "orig_to" && x.Value.Contains(message.To)));
+                toPredicate = toPredicate.And(x => x.Key == "to" && x.Value.Contains(message.To));
+                toPredicate = toPredicate.Or(x => x.Key == "orig_to" && x.Value.Contains(message.To));
             }
             var fromPredicate = PredicateBuilder.True<EmailProperty>();
             if (message.From != null)
@@ -114,76 +191,28 @@
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
 
-            var baseQuery = from m in _context
+            return from m in _context
                 .EmailProperties
-                .AsExpandable().Where(x => x.Key == "message-id")
-                            join filterTo in
-                                filterToQuery on new {m.QueueId, m.Host}
-                                equals new {filterTo.QueueId, filterTo.Host}
-                            join filterFrom in
-                                filterFromQuery on new {m.QueueId, m.Host}
-                                equals new {filterFrom.QueueId, filterFrom.Host}
-                            join filterSourceTime in
-                                filterSourceTimeQuery on new {m.QueueId, m.Host}
-                                equals new {filterSourceTime.QueueId, filterSourceTime.Host}
-                            select m;
+                .Where(x => x.Key == "message-id")
+                   join filterTo in
+                       filterToQuery on new {m.QueueId, m.Host}
+                       equals new {filterTo.QueueId, filterTo.Host}
+                   join filterFrom in
+                       filterFromQuery on new {m.QueueId, m.Host}
+                       equals new {filterFrom.QueueId, filterFrom.Host}
+                   join filterSourceTime in
+                       filterSourceTimeQuery on new {m.QueueId, m.Host}
+                       equals new {filterSourceTime.QueueId, filterSourceTime.Host}
+                   select m;
+        }
 
-            var count = baseQuery.Count();
-
-            var pagedQuery = baseQuery
-                .OrderByDescending(x => x.SourceTime)
-                .Skip(skipSize)
-                .Take(takeSize);
-
-            var filterPropertyQuery = _context
-                .EmailProperties
-                .AsExpandable()
-                .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
-
-            var query = (from m in pagedQuery
-                         join attr in
-                             filterPropertyQuery on new {m.QueueId, m.Host}
-                             equals new {attr.QueueId, attr.Host}
-                         orderby m.SourceTime descending
-                         select new
-                         {
-                             MessageId = m.Value,
-                             FirstSeen = m.SourceTime,
-                             attr.Key,
-                             attr.Value,
-                             attr.SourceTime
-                         })
-                .ToList();
-
-            var projection = query.AsEnumerable()
-                                  .GroupBy(x => new {x.MessageId, x.FirstSeen})
-                                  .Select(
-                                      g =>
-                                          new
-                                          {
-                                              g.Key.MessageId,
-                                              g.Key.FirstSeen,
-                                              Group =
-                                                  g.ToLookup(x => x.Key).
-                                                    ToDictionary(x => x.Key, s => s.OrderByDescending(x => x.SourceTime).Select(x => x.Value))
-                                          })
-                                  .Select(x => new ListEmails.Email
-                                  {
-                                      MessageId = x.MessageId,
-                                      FirstSeen = x.FirstSeen.Value,
-                                      To = string.Join(";", (x.Group.GetOrDefault("to") ?? Enumerable.Empty<string>()).Distinct()),
-                                      Size = x.Group.GetOrDefault("size")?.FirstOrDefault(),
-                                      From = x.Group.GetOrDefault("from")?.FirstOrDefault(),
-                                      NumberOfRecipients = x.Group.GetOrDefault("nrcpt")?.FirstOrDefault(),
-                                  });
-
-            return new ListEmails.Result
-            {
-                Emails = projection.ToList(),
-                Page = page,
-                PageSize = takeSize,
-                Count = count
-            };
+        private class Params
+        {
+            public string MessageId { get; set; }
+            public DateTime? FirstSeen { get; set; }
+            public string Key { get; set; }
+            public string Value { get; set; }
+            public DateTime? SourceTime { get; set; }
         }
     }
 }

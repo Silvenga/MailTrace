@@ -30,7 +30,7 @@
 
         public override string ToString()
         {
-            return $"Id: {Id}, Host: {Host}, QueueId: {QueueId}, Key: {Key}, Value: {Value}, SourceTime: {SourceTime}, LogId: {LogId}";
+            return $"{Key}: {Value}, SourceTime: {SourceTime}, LogId: {LogId}";
         }
     }
 }

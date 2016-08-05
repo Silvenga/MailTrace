@@ -1,5 +1,6 @@
 ﻿namespace MailTrace.Host.Controllers
 {
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using MailTrace.Host.Queries.Emails;
@@ -21,11 +22,11 @@
         }
 
         [Route(""), HttpGet]
-        public IHttpActionResult ListEmailsAsync([FromUri] ListEmails.Query query)
+        public async Task<IHttpActionResult> ListEmailsAsync([FromUri] ListEmails.Query query)
         {
             query = query ?? new ListEmails.Query();
 
-            var result = _mediator.Send(query);
+            var result = await _mediator.SendAsync(query);
 
             return Ok(result);
         }

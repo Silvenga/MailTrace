@@ -1,8 +1,10 @@
 ﻿namespace MailTrace.Host.Tests.Queries
 {
     using System;
+    using System.Data.Common;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Effort.DataLoaders;
 
@@ -21,8 +23,18 @@
 
         private const string AssetsDirectory = "Assets";
 
+        private static DbConnection MultipleTosDbFactory()
+        {
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "MultipleTos");
+            var loader = new CsvDataLoader(dataPath);
+
+            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+
+            return connection;
+        }
+
         [Fact]
-        public void Can_get_list_of_emails()
+        public async Task Can_get_list_of_emails()
         {
             var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "Defered");
             var loader = new CsvDataLoader(dataPath);
@@ -35,7 +47,7 @@
 
             // Act
 
-            var result = handler.Handle(query);
+            var result = await handler.Handle(query);
 
             // Assert
             result.Emails.Should().HaveCount(1);
@@ -50,12 +62,9 @@
         }
 
         [Fact]
-        public void When_multiple_tos_are_created_concat()
+        public async Task When_multiple_tos_are_created_concat()
         {
-            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "MultipleTos");
-            var loader = new CsvDataLoader(dataPath);
-
-            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var connection = MultipleTosDbFactory();
             var context = new TraceContext(connection);
 
             var query = new ListEmails.Query();
@@ -63,7 +72,7 @@
 
             // Act
 
-            var result = handler.Handle(query);
+            var result = await handler.Handle(query);
 
             // Assert
             result.Emails.Should().HaveCount(1);
@@ -78,12 +87,9 @@
         }
 
         [Fact]
-        public void When_filtering_by_to_filter_multi_to_emails()
+        public async Task When_filtering_by_to_filter_multi_to_emails()
         {
-            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "MultipleTos");
-            var loader = new CsvDataLoader(dataPath);
-
-            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var connection = MultipleTosDbFactory();
             var context = new TraceContext(connection);
 
             var query = new ListEmails.Query
@@ -94,7 +100,7 @@
 
             // Act
 
-            var result = handler.Handle(query);
+            var result = await handler.Handle(query);
 
             // Assert
             result.Emails.Should().HaveCount(1);
@@ -109,12 +115,47 @@
         }
 
         [Fact]
-        public void When_filtering_by_to_filter_result()
+        public async Task When_filtering_for_a_non_existing_email_return_empty_list()
         {
-            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), AssetsDirectory, "MultipleTos");
-            var loader = new CsvDataLoader(dataPath);
+            var connection = MultipleTosDbFactory();
+            var context = new TraceContext(connection);
 
-            var connection = Effort.DbConnectionFactory.CreateTransient(loader);
+            var query = new ListEmails.Query
+            {
+                To = AutoFixture.Create<string>()
+            };
+            var handler = new ListEmailsHandler(context);
+
+            // Act
+            var result = await handler.Handle(query);
+
+            // Assert
+            result.Emails.Should().BeEmpty();
+        }
+
+        [Fact]
+        public async Task When_filtering_for_org_recp_return()
+        {
+            var connection = MultipleTosDbFactory();
+            var context = new TraceContext(connection);
+
+            var query = new ListEmails.Query
+            {
+                To = "test@defy.xyz"
+            };
+            var handler = new ListEmailsHandler(context);
+
+            // Act
+            var result = await handler.Handle(query);
+
+            // Assert
+            result.Emails.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public async Task When_filtering_by_to_filter_result()
+        {
+            var connection = MultipleTosDbFactory();
             var context = new TraceContext(connection);
 
             var query = new ListEmails.Query
@@ -125,7 +166,7 @@
 
             // Act
 
-            var result = handler.Handle(query);
+            var result = await handler.Handle(query);
 
             // Assert
             result.Emails.Should().HaveCount(0);

@@ -56,7 +56,7 @@ export class List {
 
     calculatePaging() {
         let pages = Math.ceil(this.count / this.pageSize);
-        
+
         this.pagination = {
             pageSize: this.pageSize,
             page: this.page,
@@ -98,5 +98,11 @@ export class List {
         let response = await this.http.fetch(`emails?${query}`);
         let result = (await response.json());
         return result;
+    }
+
+    async checkForMore(topIndex, isAtBottom, isAtTop) {
+        if(isAtBottom){
+            nextPage();
+        }
     }
 }

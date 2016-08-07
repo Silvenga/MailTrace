@@ -80,7 +80,7 @@
             var skipSize = takeSize * (page - 1);
 
             var baseQuery = BaseQueryAndFilter(message);
-            var countTask = baseQuery.CountAsync();
+            var countTask = await baseQuery.CountAsync();
 
             var pagedQuery = baseQuery
                 .OrderByDescending(x => x.SourceTime)
@@ -114,7 +114,7 @@
                 Emails = projection,
                 Page = page,
                 PageSize = takeSize,
-                Count = await countTask
+                Count = countTask
             };
         }
 

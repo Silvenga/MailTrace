@@ -38,7 +38,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr repeat.for="email of emails">
+        <tr virtual-repeat.for="email of emails" virtual-repeat-next="checkForMore">
           <td><i class="fa fa-envelope-o" aria-hidden="true"></i></td>
           <td>${email.to | default:"Unknown" }</td>
           <td>${email.from | emailCleanup | default:"Unknown" }</td>

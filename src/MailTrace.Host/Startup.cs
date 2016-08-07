@@ -60,16 +60,22 @@
 
         private static void ConfigureStaticHosting(IAppBuilder app)
         {
-            var physicalFileSystem = new PhysicalFileSystem("Content");
-            var options = new FileServerOptions
+            try
             {
-                EnableDefaultFiles = true,
-                FileSystem = physicalFileSystem,
-                EnableDirectoryBrowsing = true
-            };
-            options.StaticFileOptions.FileSystem = physicalFileSystem;
-            options.StaticFileOptions.ServeUnknownFileTypes = true;
-            app.UseFileServer(options);
+                var physicalFileSystem = new PhysicalFileSystem("Content");
+                var options = new FileServerOptions
+                {
+                    EnableDefaultFiles = true,
+                    FileSystem = physicalFileSystem,
+                    EnableDirectoryBrowsing = true
+                };
+                options.StaticFileOptions.FileSystem = physicalFileSystem;
+                options.StaticFileOptions.ServeUnknownFileTypes = true;
+                app.UseFileServer(options);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private static void ConfigureLogging()

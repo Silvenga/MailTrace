@@ -4,7 +4,8 @@ import 'bootstrap';
 bootstrap(async (aurelia) => {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging();
+    .developmentLogging()
+    .plugin('aurelia-ui-virtualization');
 
   //Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');

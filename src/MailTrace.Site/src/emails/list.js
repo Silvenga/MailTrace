@@ -1,6 +1,7 @@
 import { inject, Lazy } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-fetch-client';
 import {Router} from 'aurelia-router';
+import Moment from 'moment';
 
 // polyfill fetch client conditionally
 const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(self.fetch);
@@ -8,9 +9,19 @@ const fetch = !self.fetch ? System.import('isomorphic-fetch') : Promise.resolve(
 @inject(Lazy.of(HttpClient), Router)
 export class List {
 
+    emails = [];
+    params = {};
+    to;
+    from;
+    before;
+    after;
+    page;
+    pageSize;
+
     constructor(getHttpClient, router) {
         this.getHttpClient = getHttpClient;
         this.router = router;
+        this.that = this;
     }
 
     async activate(params) {
@@ -40,6 +51,17 @@ export class List {
     }
 
     async refresh() {
+
+        var query = {
+            to: this.to,
+            from: this.from,
+            before: this.before,
+            after: this.after,
+            page: this.page,
+            pageSize: this.pageSize
+        }
+        this.router.navigateToRoute('emails', query, { replace: true });
+
         let result = await this.fetchEmails(
             this.page,
             this.pageSize,
@@ -51,37 +73,6 @@ export class List {
         this.page = result.page;
         this.pageSize = result.pageSize;
         this.count = result.count;
-        this.calculatePaging();
-    }
-
-    calculatePaging() {
-        let pages = Math.ceil(this.count / this.pageSize);
-
-        this.pagination = {
-            pageSize: this.pageSize,
-            page: this.page,
-            count: this.count,
-            pages: pages
-        };
-        console.log(this.pagination);
-    }
-
-    async search() {
-        var query = {
-            to: this.to,
-            from: this.from,
-            before: this.before,
-            after: this.after,
-            page: this.page,
-            pageSize: this.pageSize
-        }
-        this.router.navigateToRoute('emails', query, { replace: true });
-        this.refresh();
-    }
-
-    async nextPage() {
-        this.page++;
-        search();
     }
 
     async fetchEmails(page, pageSize, before, after, from, to) {
@@ -95,14 +86,37 @@ export class List {
             to: to
         });
 
-        let response = await this.http.fetch(`emails?${query}`);
-        let result = (await response.json());
+        // let response = await this.http.fetch(`emails?${query}`);
+        // let result = await response.json();
+        let result = this.createFixtures(page, pageSize);
         return result;
     }
 
-    async checkForMore(topIndex, isAtBottom, isAtTop) {
-        if(isAtBottom){
-            nextPage();
+    createFixtures(page, pageSize) {
+        console.log(`Openning: ${page}`);
+        let array = [];
+        for (var index = 0; index < pageSize; index++) {
+            array.push({
+                to: `<message-${index}-page-${page}@silvenga.com>`,
+                from: "<from@silvenga.com>",
+                firstSeen: Moment.now(),
+                messageId: `${index}`
+            });
         }
+
+        const count = 100;
+
+        return {
+            emails: array,
+            page: page,
+            pageSize: pageSize,
+            count: count
+        };
+    }
+
+    async getPage(page, pageSize) {
+        this.page = page;
+        this.pageSize = pageSize;
+        await this.refresh();
     }
 }

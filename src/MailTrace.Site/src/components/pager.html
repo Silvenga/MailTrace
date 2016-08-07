@@ -1,0 +1,21 @@
+<template>
+    <div>
+        Page ${page} PageSize ${pageSize} Count ${count} Pages ${pages}
+    </div>
+
+    <form class="form-inline" submit.delegate="jump()">
+        <div class="form-group">
+            <div class="input-group">
+               <button class="btn btn-default ${canPrev ? '' : 'disabled'}" click.trigger="prev()">Prev</button>
+            </div>
+            <div class="input-group">
+                <div class="input-group-addon">Page</div>
+                <input class="form-control ${canJump ? '' : 'has-error'}" type="number" value.bind="jumpPage">
+            </div>
+            <div class="input-group">
+                 <button class="btn btn-default ${canNext ? '' : 'disabled'}" click.trigger="next()">Next</button>
+            </div>
+            <button type="submit" class="btn btn-default" style="">Search</button>
+        </div>
+    </form>
+</template>

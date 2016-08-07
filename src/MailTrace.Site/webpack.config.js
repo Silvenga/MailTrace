@@ -82,26 +82,26 @@ switch (ENV) {
             baseConfig,
 
             require('@easy-webpack/config-env-production')
-            ({ compress: true }),
+                ({ compress: true }),
 
             require('@easy-webpack/config-aurelia')
-            ({ root: rootDir, src: srcDir, title: title, baseUrl: baseUrl }),
+                ({ root: rootDir, src: srcDir, title: title, baseUrl: baseUrl }),
 
             require('@easy-webpack/config-babel')(),
             require('@easy-webpack/config-html')(),
 
             require('@easy-webpack/config-css')
-            ({ filename: 'styles.css', allChunks: false, sourceMap: false }),
+                ({ filename: 'styles.css', allChunks: false, sourceMap: false }),
 
             require('@easy-webpack/config-fonts-and-images')(),
             require('@easy-webpack/config-global-bluebird')(),
             require('@easy-webpack/config-global-jquery')(),
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')
-            ({ minify: true }),
+                ({ minify: true }),
 
             require('@easy-webpack/config-uglify')
-            ({ debug: false })
+                ({ debug: false })
         );
         break;
     default:
@@ -113,20 +113,20 @@ switch (ENV) {
             require('@easy-webpack/config-env-development')(),
 
             require('@easy-webpack/config-aurelia')
-            ({ root: rootDir, src: srcDir, title: title, baseUrl: baseUrl }),
+                ({ root: rootDir, src: srcDir, title: title, baseUrl: baseUrl }),
 
             require('@easy-webpack/config-babel')(),
             require('@easy-webpack/config-html')(),
 
             require('@easy-webpack/config-css')
-            ({ filename: 'styles.css', allChunks: false, sourceMap: false }),
+                ({ filename: 'styles.css', allChunks: false, sourceMap: false }),
 
             require('@easy-webpack/config-fonts-and-images')(),
             require('@easy-webpack/config-global-bluebird')(),
             require('@easy-webpack/config-global-jquery')(),
             require('@easy-webpack/config-global-regenerator')(),
             require('@easy-webpack/config-generate-index-html')
-            ({ minify: false })
+                ({ minify: false })
         );
         break;
 }
@@ -134,7 +134,7 @@ switch (ENV) {
 config = generateConfig(
     config,
     require('@easy-webpack/config-common-chunks-simple')
-    ({ appChunkName: 'app', firstChunk: 'aurelia-bootstrap' })
+        ({ appChunkName: 'app', firstChunk: 'aurelia-bootstrap' })
 );
 
 module.exports = config;

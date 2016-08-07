@@ -27,6 +27,11 @@
   </form>
 
   <div class="table-responsive">
+
+    <require from="components/pager"></require>
+
+    <pager page.bind="page" count.bind="count" page-size.bind="pageSize" get-page.bind="that"></pager>
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -47,8 +52,6 @@
         </tr>
       </tbody>
     </table>
-
-    <!--<button click.delegate="nextPage()" class="btn btn-default btn-block">Viewing ${emails.length}. Load ${pageSize} more.</button>-->
 
   </div>
 </template>

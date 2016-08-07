@@ -12,7 +12,9 @@
     "homepage": "https://github.com/aurelia/skeleton-navigation#readme",
     "aurelia": {
         "build": {
-            "resources": []
+            "resources": [
+                "aurelia-ui-virtualization/virtual-repeat-next"
+            ]
         }
     },
     "dependencies": {

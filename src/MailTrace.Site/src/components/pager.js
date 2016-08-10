@@ -19,7 +19,6 @@ export class Pager {
         this._jumpPage = value;
     }
 
-    // @computedFrom('jumpPage')
     get canJump(){
         return this.jumpPage > 0 && this.jumpPage <= this.pages
     }

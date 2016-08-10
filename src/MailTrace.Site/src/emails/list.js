@@ -37,7 +37,7 @@ export class List {
 
         this.populateFromParams(params);
 
-        await this.refresh();
+        // await this.refresh();
     }
 
     populateFromParams(params) {

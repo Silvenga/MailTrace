@@ -12,14 +12,11 @@
     "homepage": "https://github.com/aurelia/skeleton-navigation#readme",
     "aurelia": {
         "build": {
-            "resources": [
-                "aurelia-ui-virtualization/virtual-repeat-next"
-            ]
+            "resources": []
         }
     },
     "dependencies": {
         "aurelia-bootstrapper-webpack": "^1.0.0-rc.1.0.0",
-        "aurelia-ui-virtualization": "^1.0.0-beta.2.0.0",
         "aurelia-event-aggregator": "^1.0.0-rc.1.0.0",
         "aurelia-fetch-client": "^1.0.0-rc.1.0.0",
         "aurelia-framework": "^1.0.0-rc.1.0.0",

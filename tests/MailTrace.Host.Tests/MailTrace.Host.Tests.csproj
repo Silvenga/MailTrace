@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\LogsControllerFacts.cs" />
+    <Compile Include="Data\EmailFacts.cs" />
     <Compile Include="Fixtures\TestTraceContext.cs" />
     <Compile Include="LogProcessing\LogParserFacts.cs" />
     <Compile Include="MediatRFacts.cs" />

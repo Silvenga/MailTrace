@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using AutoMapper.Configuration;
-
+    using MailTrace.Components.Helpers;
     using MailTrace.Data;
 
     using MediatR;

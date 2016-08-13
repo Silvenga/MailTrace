@@ -149,19 +149,9 @@
   <ItemGroup>
     <Compile Include="Controllers\EmailsController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
-    <Compile Include="Models\EmailStatus.cs" />
-    <Compile Include="Models\Logs\LineAttribute.cs" />
-    <Compile Include="Models\Logs\LogLine.cs" />
-    <Compile Include="LogProcessing\LogParser.cs" />
-    <Compile Include="Models\Logs\PostfixService.cs" />
     <Compile Include="Ninject\ContravariantBindingResolver.cs" />
     <Compile Include="Ninject\KernelConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\Emails\GetEmail.cs" />
-    <Compile Include="Queries\Logs\ImportLogs.cs" />
-    <Compile Include="Queries\Emails\ListEmails.cs" />
-    <Compile Include="Queries\Logs\ListLogs.cs" />
-    <Compile Include="Queries\Reports\DeliveryAttemptsReport.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +162,10 @@
     <ProjectReference Include="..\Data\MailTrace.Data\MailTrace.Data.csproj">
       <Project>{ddb7f080-7a44-4984-b2c3-cf592a9c2e0a}</Project>
       <Name>MailTrace.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MailTrace.Components\MailTrace.Components.csproj">
+      <Project>{A68A4EF3-1672-4474-AA72-A9C743CEC1B7}</Project>
+      <Name>MailTrace.Components</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

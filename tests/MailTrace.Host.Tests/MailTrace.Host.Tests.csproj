@@ -161,6 +161,10 @@
       <Project>{ddb7f080-7a44-4984-b2c3-cf592a9c2e0a}</Project>
       <Name>MailTrace.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\MailTrace.Components\MailTrace.Components.csproj">
+      <Project>{A68A4EF3-1672-4474-AA72-A9C743CEC1B7}</Project>
+      <Name>MailTrace.Components</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\MailTrace.Host\MailTrace.Host.csproj">
       <Project>{866717da-cb0b-487b-9a09-c46ad0a56898}</Project>
       <Name>MailTrace.Host</Name>

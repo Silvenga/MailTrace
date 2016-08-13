@@ -12,6 +12,7 @@
 
     using LinqKit;
 
+    using MailTrace.Components.Helpers;
     using MailTrace.Data;
     using MailTrace.Data.Entities;
 

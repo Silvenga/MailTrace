@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.LogProcessing
+﻿namespace MailTrace.Components.LogProcessing
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using MailTrace.Host.Models.Logs;
+    using MailTrace.Components.Models.Logs;
 
     using NLog;
 

@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Queries.Emails
+﻿namespace MailTrace.Components.Queries.Emails
 {
     using System;
     using System.Collections.Generic;
@@ -80,13 +80,13 @@
         public GetEmail.Result Handle(GetEmail.Query message)
         {
             var emailAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                         join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                         where new[] {"message-id", "from", "size", "client", "nrcpt"}.Contains(attr.Key)
-                         select new
-                         {
-                             attr.Key,
-                             attr.Value
-                         })
+                                   join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                                   where new[] {"message-id", "from", "size", "client", "nrcpt"}.Contains(attr.Key)
+                                   select new
+                                   {
+                                       attr.Key,
+                                       attr.Value
+                                   })
                 .Distinct()
                 .ToLookup(x => x.Key)
                 .ToDictionary(x => x.Key, x => x.First().Value);
@@ -106,17 +106,17 @@
             };
 
             var attemptAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                            join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
-                            where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to"}.Contains(attr.Key)
-                            select new
-                            {
-                                attr.Host,
-                                attr.QueueId,
-                                attr.Key,
-                                attr.Value,
-                                attr.SourceTime,
-                                attr.LogId
-                            })
+                                     join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+                                     where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to"}.Contains(attr.Key)
+                                     select new
+                                     {
+                                         attr.Host,
+                                         attr.QueueId,
+                                         attr.Key,
+                                         attr.Value,
+                                         attr.SourceTime,
+                                         attr.LogId
+                                     })
                 .AsEnumerable()
                 .GroupBy(x => x.LogId)
                 .Select(g => g.ToLookup(x => x.Key).ToDictionary(x => x.Key, x => x.FirstOrDefault()))

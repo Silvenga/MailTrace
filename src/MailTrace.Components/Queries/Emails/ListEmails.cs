@@ -1,12 +1,10 @@
-﻿namespace MailTrace.Host.Queries.Emails
+﻿namespace MailTrace.Components.Queries.Emails
 {
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using AutoMapper.Configuration;
 
     using JetBrains.Annotations;
 

@@ -6,8 +6,8 @@
 
     using FluentAssertions;
 
-    using MailTrace.Host.LogProcessing;
-    using MailTrace.Host.Models.Logs;
+    using MailTrace.Components.LogProcessing;
+    using MailTrace.Components.Models.Logs;
 
     using Xunit;
 

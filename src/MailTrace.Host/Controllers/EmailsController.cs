@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using System.Web.Http;
 
-    using MailTrace.Host.Queries.Emails;
+    using MailTrace.Components.Queries.Emails;
 
     using MediatR;
 

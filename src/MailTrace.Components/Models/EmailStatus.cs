@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Models
+﻿namespace MailTrace.Components.Models
 {
     public enum EmailStatus
     {

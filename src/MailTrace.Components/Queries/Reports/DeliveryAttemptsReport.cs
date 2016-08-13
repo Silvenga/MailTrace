@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Queries.Reports
+﻿namespace MailTrace.Components.Queries.Reports
 {
     using System;
 

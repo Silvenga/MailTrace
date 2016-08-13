@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Models.Logs
+﻿namespace MailTrace.Components.Models.Logs
 {
     public class LineAttribute
     {

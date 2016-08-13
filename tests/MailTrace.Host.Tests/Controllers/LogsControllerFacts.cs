@@ -9,10 +9,10 @@
 
     using global::Ninject;
 
+    using MailTrace.Components.Queries.Logs;
     using MailTrace.Host.Controllers;
     using MailTrace.Data;
     using MailTrace.Host.Ninject;
-    using MailTrace.Host.Queries.Logs;
     using MailTrace.Host.Tests.Fixtures;
 
     using Xunit;

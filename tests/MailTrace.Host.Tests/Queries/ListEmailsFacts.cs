@@ -10,8 +10,8 @@
 
     using FluentAssertions;
 
+    using MailTrace.Components.Queries.Emails;
     using MailTrace.Data;
-    using MailTrace.Host.Queries.Emails;
 
     using Ploeh.AutoFixture;
 

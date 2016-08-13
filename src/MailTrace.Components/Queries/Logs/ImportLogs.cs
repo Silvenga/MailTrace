@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Host.Queries.Logs
+﻿namespace MailTrace.Components.Queries.Logs
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,9 +6,9 @@
 
     using FluentValidation;
 
+    using MailTrace.Components.LogProcessing;
     using MailTrace.Data;
     using MailTrace.Data.Entities;
-    using MailTrace.Host.LogProcessing;
 
     using MediatR;
 

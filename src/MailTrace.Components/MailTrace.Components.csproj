@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Emails\QueueEmail.cs" />
     <Compile Include="Helpers\PrimitiveExtentions.cs" />
     <Compile Include="LogProcessing\LogParser.cs" />
     <Compile Include="Models\EmailStatus.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Emails\GetEmail.cs" />
     <Compile Include="Queries\Emails\ListEmails.cs" />
-    <Compile Include="Queries\Logs\ImportLogs.cs" />
+    <Compile Include="Commands\Logs\ImportLogs.cs" />
     <Compile Include="Queries\Logs\ListLogs.cs" />
     <Compile Include="Queries\Reports\DeliveryAttemptsReport.cs" />
   </ItemGroup>

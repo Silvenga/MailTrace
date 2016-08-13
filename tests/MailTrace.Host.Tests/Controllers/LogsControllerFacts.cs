@@ -9,6 +9,7 @@
 
     using global::Ninject;
 
+    using MailTrace.Components.Commands.Logs;
     using MailTrace.Components.Queries.Logs;
     using MailTrace.Host.Controllers;
     using MailTrace.Data;

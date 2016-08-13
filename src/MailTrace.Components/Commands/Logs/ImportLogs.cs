@@ -1,4 +1,4 @@
-﻿namespace MailTrace.Components.Queries.Logs
+﻿namespace MailTrace.Components.Commands.Logs
 {
     using System.Collections.Generic;
     using System.Linq;

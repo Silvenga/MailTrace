@@ -16,7 +16,7 @@
         {
             var kernel = new StandardKernel();
 
-            BindAutoMapper(kernel);
+            //BindAutoMapper(kernel);
             BindMediatR(kernel);
 
             return kernel;

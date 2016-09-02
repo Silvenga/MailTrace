@@ -1,4 +1,4 @@
-PostgreSQL:
+PostgreSQL-MailTrace:
   image: sameersbn/postgresql:9.4-22
   ports:
     - "5432:5432"

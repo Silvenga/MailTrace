@@ -20,10 +20,10 @@
             var emailList = AutoFixture.CreateMany<string>().ToList();
             var emails = string.Join(";", emailList);
 
-            var email = new Email {To = emails};
+            var email = new Email {Recipient = emails};
 
             // Act
-            var result = email.ToList;
+            var result = email.RecipientList;
 
             // Assert
             result.Should().BeEquivalentTo(emailList);
@@ -32,10 +32,10 @@
         [Fact]
         public void When_to_is_null_return_empty_to_list()
         {
-            var email = new Email {To = null};
+            var email = new Email {Recipient = null};
 
             // Act
-            var result = email.ToList;
+            var result = email.RecipientList;
 
             // Assert
             result.Should().BeEmpty();
@@ -45,13 +45,13 @@
         public void When_to_list_is_set_set_tos()
         {
             var emailList = AutoFixture.CreateMany<string>().ToList();
-          
+
             // Act
-            var email = new Email {ToList = emailList};
+            var email = new Email {RecipientList = emailList};
 
             // Assert
             var emails = string.Join(";", emailList);
-            email.To.Should().Be(emails);
+            email.Recipient.Should().Be(emails);
         }
     }
 }

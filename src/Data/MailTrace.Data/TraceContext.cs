@@ -20,7 +20,9 @@
 
         public DbSet<Email> Emails { get; set; }
 
-        public DbSet<EmailProperty> EmailProperties { get; set; }
+        public DbSet<EmailLog> EmailLogs { get; set; }
+
+        public DbSet<EmailMeta> EmailMetas { get; set; }
 
         public virtual void Migrate()
         {

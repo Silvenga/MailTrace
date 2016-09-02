@@ -55,7 +55,7 @@
             {
                 var lines = _parser
                     .Parse(message.LogLines)
-                    .SelectMany(x => x.Attributes, (line, attribute) => new EmailProperty
+                    .SelectMany(x => x.Attributes, (line, attribute) => new EmailLog
                     {
                         QueueId = line.QueueId,
                         Host = line.Host,
@@ -73,7 +73,7 @@
                 }
                 Logger.Info("-------------------------");
 
-                _context.EmailProperties.AddRange(lines);
+                _context.EmailLogs.AddRange(lines);
 
                 var changed = await _context.SaveChangesAsync();
 

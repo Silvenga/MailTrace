@@ -79,8 +79,8 @@
 
         public GetEmail.Result Handle(GetEmail.Query message)
         {
-            var emailAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                                   join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+            var emailAttributes = (from m in _context.EmailLogs.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
+                                   join attr in _context.EmailLogs on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
                                    where new[] {"message-id", "from", "size", "client", "nrcpt"}.Contains(attr.Key)
                                    select new
                                    {
@@ -105,8 +105,8 @@
                 NumberOfRecipients = emailAttributes.GetOrDefault("nrcpt"),
             };
 
-            var attemptAttributes = (from m in _context.EmailProperties.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
-                                     join attr in _context.EmailProperties on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
+            var attemptAttributes = (from m in _context.EmailLogs.Where(x => x.Key == "message-id" && x.Value == message.MessageId)
+                                     join attr in _context.EmailLogs on new {m.QueueId, m.Host} equals new {attr.QueueId, attr.Host}
                                      where new[] {"relay", "delay", "delays", "dsn", "status", "to", "orig_to"}.Contains(attr.Key)
                                      select new
                                      {

@@ -1,9 +1,9 @@
 ﻿namespace MailTrace.Data.Entities
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public class Email
     {
@@ -11,17 +11,19 @@
 
         public string Id { get; set; }
 
+        public IList<EmailMeta> EmailMetas { get; set; }
+
         [Index, Required]
         public string MessageId { get; set; }
 
         [Index, Required]
-        public string To { get; set; }
+        public string Recipient { get; set; }
 
         [NotMapped]
-        public IList<string> ToList
+        public IList<string> RecipientList
         {
-            get { return To?.Split(Deliminator) ?? Enumerable.Empty<string>().ToArray(); }
-            set { To = string.Join(Deliminator.ToString(), value); }
+            get { return Recipient?.Split(Deliminator) ?? Array.Empty<string>(); }
+            set { Recipient = string.Join(Deliminator.ToString(), value); }
         }
 
         [Index, Required]

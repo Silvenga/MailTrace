@@ -87,7 +87,7 @@
                 .Take(takeSize);
 
             var filterPropertyQuery = _context
-                .EmailProperties
+                .EmailLogs
                 .AsExpandable()
                 .Where(x => new[] {"to", "nrcpt", "size", "from"}.Contains(x.Key));
 
@@ -148,20 +148,20 @@
             return string.Join(";", list.Distinct());
         }
 
-        private IQueryable<EmailProperty> BaseQueryAndFilter(ListEmails.Query message)
+        private IQueryable<EmailLog> BaseQueryAndFilter(ListEmails.Query message)
         {
-            var toPredicate = PredicateBuilder.True<EmailProperty>();
+            var toPredicate = PredicateBuilder.True<EmailLog>();
             if (message.To != null)
             {
                 toPredicate = toPredicate.And(x => x.Key == "to" && x.Value.Contains(message.To));
                 toPredicate = toPredicate.Or(x => x.Key == "orig_to" && x.Value.Contains(message.To));
             }
-            var fromPredicate = PredicateBuilder.True<EmailProperty>();
+            var fromPredicate = PredicateBuilder.True<EmailLog>();
             if (message.From != null)
             {
                 fromPredicate = fromPredicate.And(x => x.Key == "from" && x.Value.Contains(message.From));
             }
-            var sourcePredicate = PredicateBuilder.True<EmailProperty>();
+            var sourcePredicate = PredicateBuilder.True<EmailLog>();
             if (message.Before != null)
             {
                 sourcePredicate = sourcePredicate.And(x => x.Key == "message-id" && x.SourceTime <= message.Before);
@@ -172,26 +172,26 @@
             }
 
             var filterToQuery = _context
-                .EmailProperties
+                .EmailLogs
                 .AsExpandable()
                 .Where(toPredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
             var filterFromQuery = _context
-                .EmailProperties
+                .EmailLogs
                 .AsExpandable()
                 .Where(fromPredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
             var filterSourceTimeQuery = _context
-                .EmailProperties
+                .EmailLogs
                 .AsExpandable()
                 .Where(sourcePredicate)
                 .Select(x => new {x.QueueId, x.Host})
                 .Distinct();
 
             return from m in _context
-                .EmailProperties
+                .EmailLogs
                 .Where(x => x.Key == "message-id")
                    join filterTo in
                        filterToQuery on new {m.QueueId, m.Host}

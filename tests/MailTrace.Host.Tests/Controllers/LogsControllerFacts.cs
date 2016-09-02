@@ -55,7 +55,7 @@
 
             // Assert
 
-            var results = context.EmailProperties.ToList();
+            var results = context.EmailLogs.ToList();
             results.Should().HaveCount(4);
         }
 

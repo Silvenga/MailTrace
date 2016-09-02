@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class EmailProperty
+    public class EmailLog
     {
         private const string HostQueueIdIndex = "IX_" + "_" + nameof(Host) + "_" + nameof(QueueId);
 
